@@ -24,7 +24,7 @@ body {
   z-index:20;
 }
 #gift {
-  width:330px; /* biraz büyütüldü */
+  width:315px; /* 1 tık daha büyük */
   cursor:pointer;
   animation: shake 2.5s infinite;
 }
@@ -37,11 +37,7 @@ body {
   25% { transform: rotate(0deg);}
   100% { transform: rotate(0deg);}
 }
-.text { 
-  color:white; 
-  font-size:26px; /* biraz büyütüldü */
-  margin-top:15px; 
-}
+.text { color:white; font-size:24px; margin-top:15px; } /* biraz büyütüldü */
 
 /* ÇELENKLER */
 .wreath { position: fixed; z-index:5; }
@@ -108,7 +104,7 @@ body {
 <img src="1766769594942.png" id="note" alt="Not PNG">
 
 <!-- Müzik -->
-<audio id="music" src="BillieEilish.mp3"></audio>
+<audio id="music" src="BillieEilish.mp3" loop></audio>
 
 <script>
 const flowerEmojis = ["🌹","🌺","🌸","🪻"];
@@ -125,7 +121,7 @@ for(let i=0;i<150;i++){
   snow.classList.add('falling');
   snow.textContent = '❄';
   snow.style.left = Math.random()*100 + 'vw';
-  snow.style.fontSize = (Math.random()*18 + 12) + 'px'; // biraz daha büyük
+  snow.style.fontSize = (Math.random()*20 + 10) + 'px';
   snow.style.color = Math.random()>0.5 ? 'white' : '#aaf';
   snow.style.animationDuration = (Math.random()*5+5) + 's';
   snow.style.opacity = Math.random();
@@ -133,7 +129,7 @@ for(let i=0;i<150;i++){
   document.body.appendChild(snow);
 }
 
-// Hediyeye tıklayınca çiçekler, buket, not ve müzik
+// Hediyeye tıklayınca çiçekler, buket ve not
 gift.addEventListener('click', () => {
   gift.style.display = 'none';
   text.style.display = 'none';
@@ -145,16 +141,16 @@ gift.addEventListener('click', () => {
     f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
     f.style.left = (Math.random()*100)+'vw';
-    f.style.fontSize = (Math.random()*40 + 40) + 'px'; // büyük
-    f.style.animationDuration = (Math.random()*4+4)+'s'; 
-    f.style.top = '-200px'; 
+    f.style.fontSize = (Math.random()*40 + 40) + 'px'; // daha büyük
+    f.style.animationDuration = (Math.random()*4+4)+'s'; // hız
+    f.style.top = '-200px';
     document.body.appendChild(f);
   }
 
   bouquet.style.display = 'block';
   note.style.display = 'block';
 
-  // Müzik çal
+  // Müzik çal ve tekrar et
   music.play();
 });
 </script>
