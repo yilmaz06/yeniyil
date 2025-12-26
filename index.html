@@ -20,7 +20,7 @@
       font-family: Arial, sans-serif;
     }
 
-    /* TAM ORTA HEDİYE + YAZI */
+    /* TAM ORTA HEDİYE */
     .center {
       position: fixed;
       top: 50%;
@@ -31,21 +31,10 @@
     }
 
     #gift {
-      width: 300px;
+      width: 300px; /* hediyeyi büyüttük */
       cursor: pointer;
       animation: shake 2.5s infinite;
-      display: block;
-      margin: 0 auto;
       outline: none;
-    }
-
-    .text {
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-      margin-top: 15px;
-      text-align: center;
-      z-index: 25;
     }
 
     @keyframes shake {
@@ -58,19 +47,24 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* ÇELENKLER - RASTGELE BOY VE KONUM */
+    .text {
+      color: white;
+      font-size: 22px;
+      margin-top: 15px;
+    }
+
+    /* ÇELENKLER - FARKLI BOY VE KONUM */
     .wreath {
       position: fixed;
       z-index: 5; /* arka plan gibi */
     }
 
-    #w1 { top: 60px; left: calc(50% - 480px); width: 370px; }
-    #w2 { top: 95px; left: calc(50% - 180px); width: 380px; }
-    #w3 { top: 75px; left: calc(50% + 160px); width: 375px; }
-    #w4 { bottom: 110px; left: calc(50% - 460px); width: 370px; }
-    #w5 { bottom: 85px; left: calc(50% - 140px); width: 380px; }
-    #w6 { bottom: 95px; left: calc(50% + 170px); width: 375px; }
-
+    #w1 { top: 80px; left: calc(50% - 450px); width: 320px; }
+    #w2 { top: 90px; left: calc(50% - 150px); width: 350px; }
+    #w3 { top: 70px; left: calc(50% + 150px); width: 330px; }
+    #w4 { bottom: 100px; left: calc(50% - 450px); width: 340px; }
+    #w5 { bottom: 80px; left: calc(50% - 150px); width: 360px; }
+    #w6 { bottom: 90px; left: calc(50% + 150px); width: 330px; }
   </style>
 </head>
 
@@ -87,7 +81,7 @@
   <!-- HEDİYE KUTUSU ORTADA -->
   <div class="center">
     <img src="1766682404708.png" id="gift" alt="Hediye Kutusu">
-    <div class="text">Hediyen Burada 🎁</div>
+    <div class="text">Sürpriz 🎁</div>
   </div>
 
 </body>
