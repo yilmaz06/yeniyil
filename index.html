@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Hediyen Burada. 🎁</title>
+  <title>Sürpriz 🎁</title>
 
   <style>
     * {
@@ -27,7 +27,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 20; /* hediyenin önünde */
+      z-index: 20; /* en önde */
     }
 
     #gift {
@@ -58,24 +58,18 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* ÇELENKLER - SABİT KONUM VE BÜYÜK BOYUT */
+    /* ÇELENKLER - RASTGELE BOY VE KONUM */
     .wreath {
       position: fixed;
-      z-index: 5; /* arka planda, hediyenin altında */
-      width: 440px;
+      z-index: 5; /* arka plan gibi */
     }
 
-    /* Üst çelenkler */
-    #w1 { top: 20px; left: calc(50% - 480px); }
-    #w2 { top: 20px; left: calc(50% + 160px); }
-
-    /* Ortadaki çelenkler - hediyenin yanlarına hizalı */
-    #w3 { top: 250px; left: calc(50% - 480px); }  /* biraz daha aşağıda */
-    #w4 { top: 250px; left: calc(50% + 160px); }
-
-    /* Alt çelenkler */
-    #w5 { bottom: 60px; left: calc(50% - 480px); }
-    #w6 { bottom: 60px; left: calc(50% + 160px); }
+    #w1 { top: 60px; left: calc(50% - 480px); width: 370px; }
+    #w2 { top: 95px; left: calc(50% - 180px); width: 380px; }
+    #w3 { top: 75px; left: calc(50% + 160px); width: 375px; }
+    #w4 { bottom: 110px; left: calc(50% - 460px); width: 370px; }
+    #w5 { bottom: 85px; left: calc(50% - 140px); width: 380px; }
+    #w6 { bottom: 95px; left: calc(50% + 170px); width: 375px; }
 
   </style>
 </head>
