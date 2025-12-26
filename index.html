@@ -8,7 +8,7 @@
 body {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #000000, #8b0000);
+  background: linear-gradient(135deg, #000000, #1E3C72, #8b0000);
   overflow: hidden;
   font-family: Arial, sans-serif;
   position: relative;
@@ -109,13 +109,14 @@ const bouquet = document.getElementById('bouquet');
 const note = document.getElementById('note');
 const text = document.querySelector('.text');
 
-// Kar efekti
-for(let i=0;i<100;i++){
+// Kar efekti (sürekli, renkli)
+for(let i=0;i<150;i++){
   const snow = document.createElement('div');
   snow.classList.add('falling');
   snow.textContent = '❄';
   snow.style.left = Math.random()*100 + 'vw';
-  snow.style.fontSize = (Math.random()*20 + 10) + 'px';
+  snow.style.fontSize = (Math.random()*15 + 10) + 'px';
+  snow.style.color = Math.random()>0.5 ? 'white' : '#aaf';
   snow.style.animationDuration = (Math.random()*5+5) + 's';
   snow.style.opacity = Math.random();
   document.body.appendChild(snow);
@@ -127,7 +128,7 @@ gift.addEventListener('click', () => {
   text.style.display = 'none';
   wreaths.forEach(w => w.style.display = 'none');
 
-  // Tek seferlik 15-20 çiçek
+  // Tek seferlik 20 çiçek
   for(let i=0;i<20;i++){
     const f = document.createElement('div');
     f.classList.add('falling');
@@ -136,6 +137,7 @@ gift.addEventListener('click', () => {
     f.style.left = Math.random()*100 + 'vw';
     f.style.top = '-50px';
     f.style.animationDuration = (Math.random()*5+5)/1.5 + 's';
+    f.style.animationIterationCount = 1; // Tek seferlik düşsün
     document.body.appendChild(f);
     flowers.push(f);
   }
