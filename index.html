@@ -71,7 +71,6 @@ body {
 /* Kar ve çiçekler */
 .falling {
   position: fixed;
-  top: -50px;
   z-index:50; /* çiçekler her şeyin üstünde */
   user-select:none;
   pointer-events:none;
@@ -79,7 +78,7 @@ body {
   animation-timing-function: linear;
 }
 @keyframes fall {
-  0% { transform: translateY(-50px); }
+  0% { transform: translateY(-150px); }
   100% { transform: translateY(110vh); }
 }
 </style>
@@ -132,15 +131,15 @@ gift.addEventListener('click', () => {
   text.style.display = 'none';
   wreaths.forEach(w => w.style.display = 'none');
 
-  // Tek seferlik 20 çiçek
-  for(let i=0;i<20;i++){
+  // Tek seferlik 27 çiçek
+  for(let i=0;i<27;i++){
     const f = document.createElement('div');
     f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
     f.style.left = (Math.random()*100)+'vw';
-    f.style.fontSize = (Math.random()*30 + 30) + 'px'; // 2 kat büyük
-    f.style.animationDuration = (Math.random()*4+4)+'s'; // biraz daha hızlı
-    f.style.top = '-50px';
+    f.style.fontSize = (Math.random()*40 + 40) + 'px'; // daha büyük
+    f.style.animationDuration = (Math.random()*4+4)+'s'; // hızlı
+    f.style.top = '-200px'; // daha yukardan başlasın
     document.body.appendChild(f);
   }
 
