@@ -18,23 +18,23 @@
       background: linear-gradient(135deg, #000000, #8b0000);
       overflow: hidden;
       font-family: Arial, sans-serif;
+      position: relative;
     }
 
-    /* TAM ORTA HEDİYE */
+    /* TAM ORTA HEDİYE + YAZI */
     .center {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 20; /* en önde */
+      z-index: 20;
     }
 
     #gift {
-      width: 300px; /* hediyeyi büyüttük */
+      width: 300px;
       cursor: pointer;
       animation: shake 2.5s infinite;
-      outline: none;
     }
 
     @keyframes shake {
@@ -53,18 +53,47 @@
       margin-top: 15px;
     }
 
-    /* ÇELENKLER - FARKLI BOY VE KONUM */
+    /* ÇELENKLER - ARKA PLAN */
     .wreath {
       position: fixed;
-      z-index: 5; /* arka plan gibi */
+      z-index: 5;
     }
 
     #w1 { top: 80px; left: calc(50% - 450px); width: 320px; }
     #w2 { top: 90px; left: calc(50% - 150px); width: 350px; }
-    #w3 { top: 70px; left: calc(50% + 150px); width: 330px; }
-    #w4 { bottom: 100px; left: calc(50% - 450px); width: 340px; }
-    #w5 { bottom: 80px; left: calc(50% - 150px); width: 360px; }
-    #w6 { bottom: 90px; left: calc(50% + 150px); width: 330px; }
+    #w3 { bottom: 100px; left: calc(50% - 450px); width: 340px; }
+    #w4 { bottom: 80px; left: calc(50% - 150px); width: 360px; }
+
+    /* Fırlayan çiçekler */
+    .flower {
+      position: absolute;
+      width: 50px;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    /* Buket ve mesaj */
+    #bouquet {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      display: none;
+      z-index: 30;
+    }
+
+    #message {
+      position: fixed;
+      top: 65%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: gold;
+      font-size: 28px;
+      font-weight: bold;
+      display: none;
+      z-index: 30;
+    }
   </style>
 </head>
 
@@ -75,8 +104,6 @@
   <img src="1766762547682.png" class="wreath" id="w2" alt="Çelenk">
   <img src="1766762547682.png" class="wreath" id="w3" alt="Çelenk">
   <img src="1766762547682.png" class="wreath" id="w4" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w5" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w6" alt="Çelenk">
 
   <!-- HEDİYE KUTUSU ORTADA -->
   <div class="center">
@@ -84,5 +111,47 @@
     <div class="text">Sürpriz 🎁</div>
   </div>
 
+  <!-- Buket ve mesaj -->
+  <img src="1766762547682.png" id="bouquet" alt="Buket">
+  <div id="message">Nice Mutlu Yıllara 🎉</div>
+
+  <script>
+    const gift = document.getElementById('gift');
+    const bouquet = document.getElementById('bouquet');
+    const message = document.getElementById('message');
+
+    const flowerEmojis = ["🌹","🌺","🌸","🪻"];
+    const flowers = [];
+
+    gift.addEventListener('click', () => {
+      // Çiçekleri oluştur
+      for(let i=0;i<15;i++){
+        const f = document.createElement('div');
+        f.classList.add('flower');
+        f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+        f.style.left = `${50 + (Math.random()*60 - 30)}%`; // ortadan biraz dağılsın
+        f.style.top = `50%`;
+        document.body.appendChild(f);
+        flowers.push(f);
+
+        // Animasyon
+        let top = 50;
+        const interval = setInterval(() => {
+          top -= Math.random()*2 + 1; // yukarı doğru
+          f.style.top = top + '%';
+          if(top < 10){
+            f.remove();
+            clearInterval(interval);
+          }
+        }, 20);
+      }
+
+      // Buket ve mesaj göster
+      setTimeout(() => {
+        bouquet.style.display = 'block';
+        message.style.display = 'block';
+      }, 1000); // çiçekler fırladıktan sonra
+    });
+  </script>
 </body>
 </html>
