@@ -2,14 +2,14 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Hediyen Burada. 🎁</title>
+  <title>Sürpriz 🎁</title>
 
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent; /* mobil mavi çerçeveyi kaldırır */
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -31,7 +31,7 @@
     }
 
     #gift {
-      width: 300px; /* büyüklük artırıldı */
+      width: 300px; /* hediyeyi büyüttük */
       cursor: pointer;
       animation: shake 2.5s infinite;
       outline: none;
@@ -57,14 +57,16 @@
     .wreath {
       position: fixed;
       z-index: 5; /* arka plan gibi */
+      width: 350px; /* hediyeden biraz daha büyük */
     }
 
-    /* Örnek pozisyonlar ve boyutlar */
-    #w1 { top: 20px; left: 30px; width: 60px; }
-    #w2 { top: 50px; right: 50px; width: 40px; }
-    #w3 { bottom: 20px; left: 100px; width: 50px; }
-    #w4 { bottom: 40px; right: 120px; width: 70px; }
-    #w5 { top: 150px; left: 200px; width: 30px; }
+    /* POZİSYONLAR (3 üst, 3 alt) */
+    #w1 { top: 100px; left: calc(50% - 450px); }
+    #w2 { top: 80px; left: calc(50% - 150px); }
+    #w3 { top: 100px; left: calc(50% + 150px); }
+    #w4 { bottom: 100px; left: calc(50% - 450px); }
+    #w5 { bottom: 80px; left: calc(50% - 150px); }
+    #w6 { bottom: 100px; left: calc(50% + 150px); }
   </style>
 </head>
 
@@ -76,6 +78,7 @@
   <img src="1766762547682.png" class="wreath" id="w3" alt="Çelenk">
   <img src="1766762547682.png" class="wreath" id="w4" alt="Çelenk">
   <img src="1766762547682.png" class="wreath" id="w5" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" id="w6" alt="Çelenk">
 
   <!-- HEDİYE KUTUSU ORTADA -->
   <div class="center">
