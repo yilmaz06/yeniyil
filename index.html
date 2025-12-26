@@ -24,7 +24,7 @@ body {
   z-index:20;
 }
 #gift {
-  width:200px; /* 1.5 kat küçültüldü önceki 300px idi */
+  width:450px; /* büyütüldü */
   cursor:pointer;
   animation: shake 2.5s infinite;
 }
@@ -39,7 +39,7 @@ body {
 }
 .text { 
   color:white; 
-  font-size:22px; /* 1.5 kat küçültüldü önceki 33px idi */
+  font-size:33px; /* büyütüldü */
   margin-top:15px; 
 }
 
@@ -115,13 +115,13 @@ const bouquet = document.getElementById('bouquet');
 const note = document.getElementById('note');
 const text = document.querySelector('.text');
 
-// Kar efekti (sürekli ve yoğun, biraz büyük)
+// Kar efekti (sürekli)
 for(let i=0;i<150;i++){
   const snow = document.createElement('div');
   snow.classList.add('falling');
   snow.textContent = '❄';
   snow.style.left = Math.random()*100 + 'vw';
-  snow.style.fontSize = (Math.random()*20 + 12) + 'px'; // biraz daha büyük
+  snow.style.fontSize = (Math.random()*25 + 15) + 'px'; // biraz daha büyük
   snow.style.color = Math.random()>0.5 ? 'white' : '#aaf';
   snow.style.animationDuration = (Math.random()*5+5) + 's';
   snow.style.opacity = Math.random();
@@ -141,9 +141,9 @@ gift.addEventListener('click', () => {
     f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
     f.style.left = (Math.random()*100)+'vw';
-    f.style.fontSize = (Math.random()*40 + 40) + 'px'; // daha büyük, değişken boyut
+    f.style.fontSize = (Math.random()*60 + 60) + 'px'; // boyutu büyük
     f.style.animationDuration = (Math.random()*4+4)+'s';
-    f.style.top = '-200px'; // daha yukardan başlasın
+    f.style.top = '-200px'; 
     document.body.appendChild(f);
   }
 
