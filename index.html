@@ -31,7 +31,7 @@
     }
 
     #gift {
-      width: 300px; /* hediyeyi büyüttük */
+      width: 300px;
       cursor: pointer;
       animation: shake 2.5s infinite;
       display: block;
@@ -58,12 +58,13 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* ÇELENKLER - SABİT KONUM VE DAHA BÜYÜK */
+    /* ÇELENKLER - SABİT KONUM VE BÜYÜK BOYUT */
     .wreath {
       position: fixed;
       z-index: 5; /* arka planda, hediyenin altında */
     }
 
+    /* Çelenklerin üst üste binmemesi için yatay ve dikey aralıklar ayarlandı */
     #w1 { top: 50px; left: calc(50% - 460px); width: 430px; }
     #w2 { top: 90px; left: calc(50% - 220px); width: 440px; }
     #w3 { top: 60px; left: calc(50% + 200px); width: 430px; }
@@ -77,4 +78,18 @@
 <body>
 
   <!-- ÇELENKLER -->
-  <img src="1766762547682.png" class="wreath" id="w1" alt="Çelenk
+  <img src="1766762547682.png" class="wreath" id="w1" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" id="w2" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" id="w3" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" id="w4" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" id="w5" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" id="w6" alt="Çelenk">
+
+  <!-- HEDİYE KUTUSU ORTADA -->
+  <div class="center">
+    <img src="1766682404708.png" id="gift" alt="Hediye Kutusu">
+    <div class="text">Hediyen Burada 🎁</div>
+  </div>
+
+</body>
+</html>
