@@ -71,15 +71,15 @@ body {
 /* Kar ve çiçekler */
 .falling {
   position: fixed;
-  z-index:50; /* üstte olacak */
+  z-index:50; /* çiçekler her şeyin üstünde */
   user-select:none;
   pointer-events:none;
   animation-name: fall;
   animation-timing-function: linear;
 }
 @keyframes fall {
-  0% { transform: translateY(-200px) scale(1); }
-  100% { transform: translateY(110vh) scale(1); }
+  0% { transform: translateY(-150px); }
+  100% { transform: translateY(110vh); }
 }
 </style>
 </head>
@@ -105,46 +105,48 @@ body {
 
 <script>
 const flowerEmojis = ["🌹","🌺","🌸","🪻"];
-const totalFlowers = 35;
+const wreaths = document.querySelectorAll('.wreath');
+const gift = document.getElementById('gift');
+const bouquet = document.getElementById('bouquet');
+const note = document.getElementById('note');
+const text = document.querySelector('.text');
 
-// Kar taneleri
-for(let i=0;i<100;i++){
-    const snow = document.createElement('div');
-    snow.className = 'falling';
-    snow.textContent = "❄";
-    const scale = 0.8 + Math.random()*0.7;
-    snow.style.fontSize = `${20*scale}px`;
-    snow.style.left = `${Math.random()*100}vw`;
-    const duration = 5 + Math.random()*5;
-    snow.style.animationDuration = `${duration}s`;
-    snow.style.top = `${-Math.random()*100}px`;
-    document.body.appendChild(snow);
-    snow.addEventListener('animationend', ()=>{ snow.remove(); });
+// Kar efekti (sürekli, daha yoğun ve büyük)
+for(let i=0;i<250;i++){
+  const snow = document.createElement('div');
+  snow.classList.add('falling');
+  snow.textContent = '❄';
+  snow.style.left = Math.random()*100 + 'vw';
+  snow.style.fontSize = (Math.random()*20 + 10) + 'px';
+  snow.style.color = Math.random()>0.5 ? 'white' : '#aaf';
+  snow.style.animationDuration = (Math.random()*5+5) + 's';
+  snow.style.opacity = Math.random();
+  snow.style.animationIterationCount = 'infinite';
+  document.body.appendChild(snow);
 }
 
-// Çiçekler
-for(let i=0;i<totalFlowers;i++){
+// Hediyeye tıklayınca çiçekler, buket ve not
+gift.addEventListener('click', () => {
+  gift.style.display = 'none';
+  text.style.display = 'none';
+  wreaths.forEach(w => w.style.display = 'none');
+
+  // Tek seferlik 35 çiçek
+  for(let i=0;i<35;i++){
     const f = document.createElement('div');
-    f.className = 'falling';
+    f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
-    const scale = 1.5 + Math.random()*0.5;
-    f.style.fontSize = `${20*scale}px`;
-    f.style.left = `${Math.random()*100}vw`;
-    f.style.animationDuration = `8s`;
-    f.style.top = `${-Math.random()*200}px`;
+    f.style.left = (Math.random()*100)+'vw';
+    f.style.fontSize = (Math.random()*40 + 40) + 'px'; // daha büyük
+    f.style.animationDuration = (Math.random()*4+4)+'s'; // aynı hız
+    f.style.top = '-200px'; // daha yukardan başlasın
     document.body.appendChild(f);
-    f.addEventListener('animationend', ()=>{ f.remove(); });
-}
+  }
 
-// Hediye tıklama
-const giftDiv = document.getElementById('gift');
-giftDiv.addEventListener('click', ()=>{
-    document.querySelector('.text').style.display='none';
-    bouquet.style.display='block';
-    note.style.display='block';
-    // Çelenkleri gizle
-    document.querySelectorAll('.wreath').forEach(w=>w.style.display='none');
+  bouquet.style.display = 'block';
+  note.style.display = 'block';
 });
 </script>
+
 </body>
 </html>
