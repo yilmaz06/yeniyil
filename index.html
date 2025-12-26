@@ -24,7 +24,7 @@ body {
   z-index:20;
 }
 #gift {
-  width:330px; /* önce 300px'ti, 1 tık büyüttük */
+  width:330px; /* biraz büyütüldü */
   cursor:pointer;
   animation: shake 2.5s infinite;
 }
@@ -39,7 +39,7 @@ body {
 }
 .text { 
   color:white; 
-  font-size:26px; /* önce 22px'ti, 1 tık büyüttük */
+  font-size:26px; /* biraz büyütüldü */
   margin-top:15px; 
 }
 
@@ -107,6 +107,9 @@ body {
 <img src="1766680551797.png" id="bouquet" alt="Buket">
 <img src="1766769594942.png" id="note" alt="Not PNG">
 
+<!-- Müzik -->
+<audio id="music" src="BillieEilish.mp3"></audio>
+
 <script>
 const flowerEmojis = ["🌹","🌺","🌸","🪻"];
 const wreaths = document.querySelectorAll('.wreath');
@@ -114,6 +117,7 @@ const gift = document.getElementById('gift');
 const bouquet = document.getElementById('bouquet');
 const note = document.getElementById('note');
 const text = document.querySelector('.text');
+const music = document.getElementById('music');
 
 // Kar efekti (sürekli)
 for(let i=0;i<150;i++){
@@ -129,7 +133,7 @@ for(let i=0;i<150;i++){
   document.body.appendChild(snow);
 }
 
-// Hediyeye tıklayınca çiçekler, buket ve not
+// Hediyeye tıklayınca çiçekler, buket, not ve müzik
 gift.addEventListener('click', () => {
   gift.style.display = 'none';
   text.style.display = 'none';
@@ -142,13 +146,16 @@ gift.addEventListener('click', () => {
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
     f.style.left = (Math.random()*100)+'vw';
     f.style.fontSize = (Math.random()*40 + 40) + 'px'; // büyük
-    f.style.animationDuration = (Math.random()*4+4)+'s'; // hız
+    f.style.animationDuration = (Math.random()*4+4)+'s'; 
     f.style.top = '-200px'; 
     document.body.appendChild(f);
   }
 
   bouquet.style.display = 'block';
   note.style.display = 'block';
+
+  // Müzik çal
+  music.play();
 });
 </script>
 
