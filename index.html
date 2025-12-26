@@ -41,41 +41,43 @@ body {
 .wreath { position: fixed; z-index: 5; }
 #w1 { top: 80px; left: calc(50% - 450px); width: 320px; }
 #w2 { top: 90px; left: calc(50% - 150px); width: 350px; }
-#w3 { bottom: 100px; left: calc(50% - 450px); width: 340px; }
-#w4 { bottom: 80px; left: calc(50% - 150px); width: 360px; }
+#w3 { top: 70px; left: calc(50% + 150px); width: 330px; }
+#w4 { bottom: 100px; left: calc(50% - 450px); width: 340px; }
+#w5 { bottom: 80px; left: calc(50% - 150px); width: 360px; }
+#w6 { bottom: 90px; left: calc(50% + 150px); width: 330px; }
 /* Fırlayan çiçekler */
 .flower {
   position: absolute;
-  font-size: 5rem;
+  font-size: 5rem; /* 5 kat büyük */
   z-index: 25;
   pointer-events: none;
 }
 /* Buket ve not PNG */
 #bouquet {
   position: fixed;
-  top: 40%;
+  top: 38%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 250px;
+  width: 1000px; /* 4 kat büyütüldü */
   display: none;
   z-index: 30;
 }
 #note {
   position: fixed;
-  top: 55%;
+  top: 52%;
   left: 50%;
   transform: translateX(-50%);
   display: none;
   z-index: 30;
-  width: 300px;
+  width: 600px; /* 2 kat büyütüldü */
 }
 /* Responsive */
 @media (max-width: 768px) {
   #gift { width: 200px; }
-  #bouquet { width: 180px; top: 42%; }
-  #note { width: 200px; top: 52%; }
+  #bouquet { width: 700px; top: 40%; }
+  #note { width: 400px; top: 48%; }
   .flower { font-size: 3rem; }
-  #w1, #w2, #w3, #w4 { width: 200px; left: auto; }
+  #w1, #w2, #w3, #w4, #w5, #w6 { width: 200px; left: auto; }
 }
 </style>
 </head>
@@ -86,6 +88,8 @@ body {
 <img src="1766762547682.png" class="wreath" id="w2" alt="Çelenk">
 <img src="1766762547682.png" class="wreath" id="w3" alt="Çelenk">
 <img src="1766762547682.png" class="wreath" id="w4" alt="Çelenk">
+<img src="1766762547682.png" class="wreath" id="w5" alt="Çelenk">
+<img src="1766762547682.png" class="wreath" id="w6" alt="Çelenk">
 
 <!-- HEDİYE -->
 <div class="center">
@@ -105,30 +109,44 @@ const flowerEmojis = ["🌹","🌺","🌸","🪻"];
 const flowers = [];
 
 gift.addEventListener('click', () => {
+  // Hediye kaybolsun
+  gift.style.display = 'none';
+
   for(let i=0;i<20;i++){
     const f = document.createElement('div');
     f.classList.add('flower');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
 
-    // Sağ veya sol başlangıç
-    const side = Math.random() < 0.5 ? 'left' : 'right';
-    f.style[side] = Math.random()*20 + '%';
-    f.style.top = '50%';
+    // Ekran dışından başlangıç
+    const startX = Math.random() < 0.5 ? -10 : window.innerWidth + 10;
+    f.style.left = startX + 'px';
+    f.style.top = window.innerHeight + 'px'; // alt dışından başlasın
     document.body.appendChild(f);
     flowers.push(f);
 
-    // Animasyon: önce yukarı sonra aşağı
-    let top = 50;
+    // Hedef üst noktası rastgele yukarı
+    const targetTop = Math.random()*40 + 10; // %10 - %50
+    const speed = Math.random()*3 + 1; // hız farklılıkları
     let goingUp = true;
+    let topPos = window.innerHeight;
+
     const interval = setInterval(() => {
       if(goingUp){
-        top -= Math.random()*0.25 + 0.1; // yukarı 4 kat yavaş
-        if(top < 30) goingUp = false; // yukarı sonrası aşağı
+        topPos -= speed; // yukarı çıkış
+        if(topPos < targetTop) goingUp = false;
       } else {
-        top += Math.random()*0.2 + 0.05; // aşağı
+        topPos += speed/2; // aşağı süzülme
       }
-      f.style.top = top + '%';
-      if(top > 100){ f.remove(); clearInterval(interval); }
+      f.style.top = topPos + 'px';
+
+      // X hareketi rastgele zig-zag
+      const leftVal = parseInt(f.style.left);
+      f.style.left = (leftVal + (Math.random()*4 - 2)) + 'px';
+
+      if(topPos > window.innerHeight + 50){
+        f.remove();
+        clearInterval(interval);
+      }
     }, 40);
   }
 
