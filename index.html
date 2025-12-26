@@ -27,11 +27,11 @@
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 20; /* en önde */
+      z-index: 20; /* hediyenin önünde */
     }
 
     #gift {
-      width: 300px;
+      width: 300px; /* hediyeyi büyüttük */
       cursor: pointer;
       animation: shake 2.5s infinite;
       display: block;
@@ -58,46 +58,23 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* ÇELENKLER */
+    /* ÇELENKLER - SABİT KONUM VE DAHA BÜYÜK */
     .wreath {
       position: fixed;
-      z-index: 5; /* arka plan gibi */
+      z-index: 5; /* arka planda, hediyenin altında */
     }
+
+    #w1 { top: 50px; left: calc(50% - 460px); width: 430px; }
+    #w2 { top: 90px; left: calc(50% - 220px); width: 440px; }
+    #w3 { top: 60px; left: calc(50% + 200px); width: 430px; }
+    #w4 { bottom: 100px; left: calc(50% - 460px); width: 430px; }
+    #w5 { bottom: 80px; left: calc(50% - 220px); width: 440px; }
+    #w6 { bottom: 90px; left: calc(50% + 200px); width: 430px; }
+
   </style>
 </head>
 
 <body>
 
   <!-- ÇELENKLER -->
-  <img src="1766762547682.png" class="wreath" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" alt="Çelenk">
-
-  <!-- HEDİYE KUTUSU ORTADA -->
-  <div class="center">
-    <img src="1766682404708.png" id="gift" alt="Hediye Kutusu">
-    <div class="text">Hediyen Burada 🎁</div>
-  </div>
-
-  <!-- JavaScript ile rastgele çelenk pozisyon ve boyutu -->
-  <script>
-    const wreaths = document.querySelectorAll('.wreath');
-
-    wreaths.forEach(w => {
-      const topOrBottom = Math.random() > 0.5 ? 'top' : 'bottom';
-      const vertical = Math.floor(Math.random() * 150) + 50; // 50-200px arası
-      const horizontal = Math.floor(Math.random() * 600) - 300; // -300 ile +300px arası
-      const size = Math.floor(Math.random() * 50) + 350; // 350-400px arası
-
-      w.style.width = size + 'px';
-      w.style.position = 'fixed';
-      w.style[topOrBottom] = vertical + 'px';
-      w.style.left = 'calc(50% + ' + horizontal + 'px)';
-    });
-  </script>
-
-</body>
-</html>
+  <img src="1766762547682.png" class="wreath" id="w1" alt="Çelenk
