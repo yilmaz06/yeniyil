@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Sürpriz 🎁</title>
+<title>Hediyen Burada. 🎁</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body {
@@ -77,7 +77,7 @@ body {
   top: -50px;
   font-size: 1.5rem;
   color: white;
-  z-index: 10; /* arka plan gibi */
+  z-index: 10;
   user-select: none;
   pointer-events: none;
   animation-name: fall;
@@ -118,7 +118,7 @@ body {
 <img src="1766769594942.png" id="note" alt="Not PNG">
 
 <script>
-// Kar oluşturma
+// Kar oluşturma (kesintisiz)
 for(let i=0;i<50;i++){
   const snow = document.createElement('div');
   snow.classList.add('snowflake');
@@ -134,13 +134,15 @@ for(let i=0;i<50;i++){
 const gift = document.getElementById('gift');
 const bouquet = document.getElementById('bouquet');
 const note = document.getElementById('note');
+const text = document.querySelector('.text');
 const flowerEmojis = ["🌹","🌺","🌸","🪻"];
 const flowers = [];
 const wreaths = document.querySelectorAll('.wreath');
 
 gift.addEventListener('click', () => {
-  // Hediye kaybolsun
+  // Hediye ve yazısı kaybolsun
   gift.style.display = 'none';
+  text.style.display = 'none';
   // Çelenkler kaybolsun
   wreaths.forEach(w => w.style.display = 'none');
 
@@ -148,44 +150,42 @@ gift.addEventListener('click', () => {
     const f = document.createElement('div');
     f.classList.add('flower');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+    document.body.appendChild(f);
+    flowers.push(f);
 
     // Hediyeden başla
     const giftRect = gift.getBoundingClientRect();
     f.style.left = (giftRect.left + giftRect.width/2) + 'px';
     f.style.top = (giftRect.top + giftRect.height/2) + 'px';
-    document.body.appendChild(f);
-    flowers.push(f);
 
-    // Rastgele hareket
-    const targetTop = Math.random()*40 + 10;
-    const speed = (Math.random()*3 + 1) * 4;
-    let goingUp = true;
+    // Rastgele hız ve yön
+    const speedY = Math.random()*2 + 2;
+    const speedX = (Math.random()*4 - 2);
+
     let topPos = giftRect.top + giftRect.height/2;
+    let leftPos = giftRect.left + giftRect.width/2;
 
     const interval = setInterval(() => {
-      if(goingUp){
-        topPos -= speed;
-        if(topPos < targetTop) goingUp = false;
-      } else {
-        topPos += speed/2;
-      }
+      topPos -= speedY; // yukarı
+      leftPos += speedX; // yanlara
+      if(topPos < 0) topPos = 0; // yukarı limit
       f.style.top = topPos + 'px';
+      f.style.left = leftPos + 'px';
 
-      const leftVal = parseInt(f.style.left);
-      f.style.left = (leftVal + (Math.random()*8 - 4)) + 'px';
+      // Sonra aşağı süzülsün
+      topPos += speedY/1.5;
+      f.style.top = topPos + 'px';
 
       if(topPos > window.innerHeight + 50){
         f.remove();
         clearInterval(interval);
       }
-    }, 40);
+    }, 30);
   }
 
-  // Buket ve not göster
-  setTimeout(() => {
-    bouquet.style.display = 'block';
-    note.style.display = 'block';
-  }, 1600);
+  // Buket ve not hemen göster
+  bouquet.style.display = 'block';
+  note.style.display = 'block';
 });
 </script>
 
