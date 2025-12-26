@@ -71,21 +71,12 @@ body {
   z-index: 50; /* çiçekler her şeyin üstünde */
   user-select: none;
   pointer-events: none;
-  font-size: 1.5rem;
   animation-name: fall;
   animation-timing-function: linear;
-  animation-iteration-count: infinite;
 }
 @keyframes fall {
   0% { transform: translateY(-50px); }
   100% { transform: translateY(110vh); }
-}
-@media (max-width: 768px) {
-  #gift { width: 200px; }
-  #bouquet { width: 700px; top: 40%; }
-  #note { width: 400px; top: 48%; }
-  .falling { font-size: 3rem; }
-  #w1, #w2, #w3, #w4, #w5, #w6 { width: 200px; left: auto; }
 }
 </style>
 </head>
@@ -118,13 +109,13 @@ const bouquet = document.getElementById('bouquet');
 const note = document.getElementById('note');
 const text = document.querySelector('.text');
 
-// Kar yoğunlaştırma
+// Kar efekti
 for(let i=0;i<100;i++){
   const snow = document.createElement('div');
   snow.classList.add('falling');
   snow.textContent = '❄';
   snow.style.left = Math.random()*100 + 'vw';
-  snow.style.fontSize = Math.random()*20 + 10 + 'px';
+  snow.style.fontSize = (Math.random()*20 + 10) + 'px';
   snow.style.animationDuration = (Math.random()*5+5) + 's';
   snow.style.opacity = Math.random();
   document.body.appendChild(snow);
@@ -136,15 +127,15 @@ gift.addEventListener('click', () => {
   text.style.display = 'none';
   wreaths.forEach(w => w.style.display = 'none');
 
-  // 20 çiçek
+  // Tek seferlik 15-20 çiçek
   for(let i=0;i<20;i++){
     const f = document.createElement('div');
     f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
-    f.style.fontSize = (Math.random()*20+20)+'px'; // daha büyük
-    f.style.left = Math.random()*100 + 'vw'; // rastgele X
+    f.style.fontSize = (Math.random()*20+20)*4 +'px'; // 4 kat büyük
+    f.style.left = Math.random()*100 + 'vw';
     f.style.top = '-50px';
-    f.style.animationDuration = (Math.random()*5+5)/1.5 + 's'; // 1.5 kat hızlı
+    f.style.animationDuration = (Math.random()*5+5)/1.5 + 's';
     document.body.appendChild(f);
     flowers.push(f);
   }
