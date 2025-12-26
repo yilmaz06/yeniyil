@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Hediyen Burada. 🎁</title>
+<title>Sürpriz 🎁</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body {
@@ -45,13 +45,6 @@ body {
 #w4 { bottom: 100px; left: calc(50% - 450px); width: 340px; }
 #w5 { bottom: 80px; left: calc(50% - 150px); width: 360px; }
 #w6 { bottom: 90px; left: calc(50% + 150px); width: 330px; }
-/* Fırlayan çiçekler */
-.flower {
-  position: absolute;
-  font-size: 5rem;
-  z-index: 50; /* her şeyin üstünde */
-  pointer-events: none;
-}
 /* Buket ve not PNG */
 #bouquet {
   position: fixed;
@@ -71,15 +64,14 @@ body {
   z-index: 30;
   width: 600px;
 }
-/* Kar */
-.snowflake {
+/* Kar ve çiçekler */
+.falling {
   position: fixed;
   top: -50px;
-  font-size: 1.5rem;
-  color: white;
-  z-index: 10;
+  z-index: 50; /* çiçekler her şeyin üstünde */
   user-select: none;
   pointer-events: none;
+  font-size: 1.5rem;
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -92,7 +84,7 @@ body {
   #gift { width: 200px; }
   #bouquet { width: 700px; top: 40%; }
   #note { width: 400px; top: 48%; }
-  .flower { font-size: 3rem; }
+  .falling { font-size: 3rem; }
   #w1, #w2, #w3, #w4, #w5, #w6 { width: 200px; left: auto; }
 }
 </style>
@@ -118,10 +110,18 @@ body {
 <img src="1766769594942.png" id="note" alt="Not PNG">
 
 <script>
-// Kar oluşturma (kesintisiz)
-for(let i=0;i<50;i++){
+const flowerEmojis = ["🌹","🌺","🌸","🪻"];
+const flowers = [];
+const wreaths = document.querySelectorAll('.wreath');
+const gift = document.getElementById('gift');
+const bouquet = document.getElementById('bouquet');
+const note = document.getElementById('note');
+const text = document.querySelector('.text');
+
+// Kar yoğunlaştırma
+for(let i=0;i<100;i++){
   const snow = document.createElement('div');
-  snow.classList.add('snowflake');
+  snow.classList.add('falling');
   snow.textContent = '❄';
   snow.style.left = Math.random()*100 + 'vw';
   snow.style.fontSize = Math.random()*20 + 10 + 'px';
@@ -130,60 +130,25 @@ for(let i=0;i<50;i++){
   document.body.appendChild(snow);
 }
 
-// Çiçekler ve hediyeye tıklama
-const gift = document.getElementById('gift');
-const bouquet = document.getElementById('bouquet');
-const note = document.getElementById('note');
-const text = document.querySelector('.text');
-const flowerEmojis = ["🌹","🌺","🌸","🪻"];
-const flowers = [];
-const wreaths = document.querySelectorAll('.wreath');
-
+// Hediyeye tıklayınca çiçekler ve buket
 gift.addEventListener('click', () => {
-  // Hediye ve yazısı kaybolsun
   gift.style.display = 'none';
   text.style.display = 'none';
-  // Çelenkler kaybolsun
   wreaths.forEach(w => w.style.display = 'none');
 
+  // 20 çiçek
   for(let i=0;i<20;i++){
     const f = document.createElement('div');
-    f.classList.add('flower');
+    f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+    f.style.fontSize = (Math.random()*20+20)+'px'; // daha büyük
+    f.style.left = Math.random()*100 + 'vw'; // rastgele X
+    f.style.top = '-50px';
+    f.style.animationDuration = (Math.random()*5+5)/1.5 + 's'; // 1.5 kat hızlı
     document.body.appendChild(f);
     flowers.push(f);
-
-    // Hediyeden başla
-    const giftRect = gift.getBoundingClientRect();
-    f.style.left = (giftRect.left + giftRect.width/2) + 'px';
-    f.style.top = (giftRect.top + giftRect.height/2) + 'px';
-
-    // Rastgele hız ve yön
-    const speedY = Math.random()*2 + 2;
-    const speedX = (Math.random()*4 - 2);
-
-    let topPos = giftRect.top + giftRect.height/2;
-    let leftPos = giftRect.left + giftRect.width/2;
-
-    const interval = setInterval(() => {
-      topPos -= speedY; // yukarı
-      leftPos += speedX; // yanlara
-      if(topPos < 0) topPos = 0; // yukarı limit
-      f.style.top = topPos + 'px';
-      f.style.left = leftPos + 'px';
-
-      // Sonra aşağı süzülsün
-      topPos += speedY/1.5;
-      f.style.top = topPos + 'px';
-
-      if(topPos > window.innerHeight + 50){
-        f.remove();
-        clearInterval(interval);
-      }
-    }, 30);
   }
 
-  // Buket ve not hemen göster
   bouquet.style.display = 'block';
   note.style.display = 'block';
 });
