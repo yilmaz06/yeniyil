@@ -58,37 +58,46 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* ÇELENKLER - RASTGELE BOY VE KONUM */
+    /* ÇELENKLER */
     .wreath {
       position: fixed;
       z-index: 5; /* arka plan gibi */
     }
-
-    #w1 { top: 60px; left: calc(50% - 480px); width: 370px; }
-    #w2 { top: 95px; left: calc(50% - 180px); width: 380px; }
-    #w3 { top: 75px; left: calc(50% + 160px); width: 375px; }
-    #w4 { bottom: 110px; left: calc(50% - 460px); width: 370px; }
-    #w5 { bottom: 85px; left: calc(50% - 140px); width: 380px; }
-    #w6 { bottom: 95px; left: calc(50% + 170px); width: 375px; }
-
   </style>
 </head>
 
 <body>
 
   <!-- ÇELENKLER -->
-  <img src="1766762547682.png" class="wreath" id="w1" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w2" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w3" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w4" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w5" alt="Çelenk">
-  <img src="1766762547682.png" class="wreath" id="w6" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" alt="Çelenk">
+  <img src="1766762547682.png" class="wreath" alt="Çelenk">
 
   <!-- HEDİYE KUTUSU ORTADA -->
   <div class="center">
     <img src="1766682404708.png" id="gift" alt="Hediye Kutusu">
     <div class="text">Hediyen Burada 🎁</div>
   </div>
+
+  <!-- JavaScript ile rastgele çelenk pozisyon ve boyutu -->
+  <script>
+    const wreaths = document.querySelectorAll('.wreath');
+
+    wreaths.forEach(w => {
+      const topOrBottom = Math.random() > 0.5 ? 'top' : 'bottom';
+      const vertical = Math.floor(Math.random() * 150) + 50; // 50-200px arası
+      const horizontal = Math.floor(Math.random() * 600) - 300; // -300 ile +300px arası
+      const size = Math.floor(Math.random() * 50) + 350; // 350-400px arası
+
+      w.style.width = size + 'px';
+      w.style.position = 'fixed';
+      w.style[topOrBottom] = vertical + 'px';
+      w.style.left = 'calc(50% + ' + horizontal + 'px)';
+    });
+  </script>
 
 </body>
 </html>
