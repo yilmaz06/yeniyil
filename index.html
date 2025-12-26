@@ -48,8 +48,8 @@ body {
 /* Fırlayan çiçekler */
 .flower {
   position: absolute;
-  font-size: 5rem; /* 5 kat büyük */
-  z-index: 25;
+  font-size: 5rem;
+  z-index: 50; /* her şeyin üstünde */
   pointer-events: none;
 }
 /* Buket ve not PNG */
@@ -58,7 +58,7 @@ body {
   top: 38%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px; /* 4 kat büyütüldü */
+  width: 1000px;
   display: none;
   z-index: 30;
 }
@@ -69,9 +69,25 @@ body {
   transform: translateX(-50%);
   display: none;
   z-index: 30;
-  width: 600px; /* 2 kat büyütüldü */
+  width: 600px;
 }
-/* Responsive */
+/* Kar */
+.snowflake {
+  position: fixed;
+  top: -50px;
+  font-size: 1.5rem;
+  color: white;
+  z-index: 10; /* arka plan gibi */
+  user-select: none;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-50px); }
+  100% { transform: translateY(110vh); }
+}
 @media (max-width: 768px) {
   #gift { width: 200px; }
   #bouquet { width: 700px; top: 40%; }
@@ -102,46 +118,61 @@ body {
 <img src="1766769594942.png" id="note" alt="Not PNG">
 
 <script>
+// Kar oluşturma
+for(let i=0;i<50;i++){
+  const snow = document.createElement('div');
+  snow.classList.add('snowflake');
+  snow.textContent = '❄';
+  snow.style.left = Math.random()*100 + 'vw';
+  snow.style.fontSize = Math.random()*20 + 10 + 'px';
+  snow.style.animationDuration = (Math.random()*5+5) + 's';
+  snow.style.opacity = Math.random();
+  document.body.appendChild(snow);
+}
+
+// Çiçekler ve hediyeye tıklama
 const gift = document.getElementById('gift');
 const bouquet = document.getElementById('bouquet');
 const note = document.getElementById('note');
 const flowerEmojis = ["🌹","🌺","🌸","🪻"];
 const flowers = [];
+const wreaths = document.querySelectorAll('.wreath');
 
 gift.addEventListener('click', () => {
   // Hediye kaybolsun
   gift.style.display = 'none';
+  // Çelenkler kaybolsun
+  wreaths.forEach(w => w.style.display = 'none');
 
   for(let i=0;i<20;i++){
     const f = document.createElement('div');
     f.classList.add('flower');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
 
-    // Ekran dışından başlangıç
-    const startX = Math.random() < 0.5 ? -10 : window.innerWidth + 10;
-    f.style.left = startX + 'px';
-    f.style.top = window.innerHeight + 'px'; // alt dışından başlasın
+    // Hediyeden başla
+    const giftRect = gift.getBoundingClientRect();
+    f.style.left = (giftRect.left + giftRect.width/2) + 'px';
+    f.style.top = (giftRect.top + giftRect.height/2) + 'px';
     document.body.appendChild(f);
     flowers.push(f);
 
-    // Hedef üst noktası rastgele yukarı
-    const targetTop = Math.random()*40 + 10; // %10 - %50
-    const speed = Math.random()*3 + 1; // hız farklılıkları
+    // Rastgele hareket
+    const targetTop = Math.random()*40 + 10;
+    const speed = (Math.random()*3 + 1) * 4;
     let goingUp = true;
-    let topPos = window.innerHeight;
+    let topPos = giftRect.top + giftRect.height/2;
 
     const interval = setInterval(() => {
       if(goingUp){
-        topPos -= speed; // yukarı çıkış
+        topPos -= speed;
         if(topPos < targetTop) goingUp = false;
       } else {
-        topPos += speed/2; // aşağı süzülme
+        topPos += speed/2;
       }
       f.style.top = topPos + 'px';
 
-      // X hareketi rastgele zig-zag
       const leftVal = parseInt(f.style.left);
-      f.style.left = (leftVal + (Math.random()*4 - 2)) + 'px';
+      f.style.left = (leftVal + (Math.random()*8 - 4)) + 'px';
 
       if(topPos > window.innerHeight + 50){
         f.remove();
