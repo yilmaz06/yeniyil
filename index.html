@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Hediyen Burada. 🎁</title>
+  <title>Sürpriz 🎁</title>
 
   <style>
     * {
@@ -64,13 +64,15 @@
       z-index: 5; /* arka planda, hediyenin altında */
     }
 
-    /* Çelenklerin üst üste binmemesi için yatay ve dikey aralıklar ayarlandı */
-    #w1 { top: 50px; left: calc(50% - 460px); width: 430px; }
-    #w2 { top: 90px; left: calc(50% - 220px); width: 440px; }
-    #w3 { top: 60px; left: calc(50% + 200px); width: 430px; }
-    #w4 { bottom: 100px; left: calc(50% - 460px); width: 430px; }
-    #w5 { bottom: 80px; left: calc(50% - 220px); width: 440px; }
-    #w6 { bottom: 90px; left: calc(50% + 200px); width: 430px; }
+    /* 2 ÜSTTE, 2 ORTADA, 2 ALTA - Daha uzak, üst üste binmiyor */
+    #w1 { top: 30px; left: calc(50% - 480px); width: 440px; }
+    #w2 { top: 30px; left: calc(50% + 160px); width: 430px; }
+
+    #w3 { top: 200px; left: calc(50% - 450px); width: 430px; }
+    #w4 { top: 200px; left: calc(50% + 190px); width: 440px; }
+
+    #w5 { bottom: 80px; left: calc(50% - 460px); width: 430px; }
+    #w6 { bottom: 80px; left: calc(50% + 180px); width: 440px; }
 
   </style>
 </head>
