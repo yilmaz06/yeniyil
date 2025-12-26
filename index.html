@@ -24,7 +24,7 @@ body {
   z-index:20;
 }
 #gift {
-  width:300px;
+  width:330px; /* önce 300px'ti, 1 tık büyüttük */
   cursor:pointer;
   animation: shake 2.5s infinite;
 }
@@ -37,7 +37,11 @@ body {
   25% { transform: rotate(0deg);}
   100% { transform: rotate(0deg);}
 }
-.text { color:white; font-size:22px; margin-top:15px; }
+.text { 
+  color:white; 
+  font-size:26px; /* önce 22px'ti, 1 tık büyüttük */
+  margin-top:15px; 
+}
 
 /* ÇELENKLER */
 .wreath { position: fixed; z-index:5; }
@@ -117,7 +121,7 @@ for(let i=0;i<150;i++){
   snow.classList.add('falling');
   snow.textContent = '❄';
   snow.style.left = Math.random()*100 + 'vw';
-  snow.style.fontSize = (Math.random()*15 + 10) + 'px';
+  snow.style.fontSize = (Math.random()*18 + 12) + 'px'; // biraz daha büyük
   snow.style.color = Math.random()>0.5 ? 'white' : '#aaf';
   snow.style.animationDuration = (Math.random()*5+5) + 's';
   snow.style.opacity = Math.random();
@@ -125,31 +129,26 @@ for(let i=0;i<150;i++){
   document.body.appendChild(snow);
 }
 
-// Hediyeye tıklayınca çiçekler, buket, not ve müzik
+// Hediyeye tıklayınca çiçekler, buket ve not
 gift.addEventListener('click', () => {
   gift.style.display = 'none';
   text.style.display = 'none';
   wreaths.forEach(w => w.style.display = 'none');
 
-  // Tek seferlik 35 çiçek
-  for(let i=0;i<35;i++){
+  // Tek seferlik 32 çiçek
+  for(let i=0;i<32;i++){
     const f = document.createElement('div');
     f.classList.add('falling');
     f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
     f.style.left = (Math.random()*100)+'vw';
-    f.style.fontSize = (Math.random()*50 + 50) + 'px'; // daha büyük
-    f.style.animationDuration = (Math.random()*4+4)+'s'; 
+    f.style.fontSize = (Math.random()*40 + 40) + 'px'; // büyük
+    f.style.animationDuration = (Math.random()*4+4)+'s'; // hız
     f.style.top = '-200px'; 
     document.body.appendChild(f);
   }
 
   bouquet.style.display = 'block';
   note.style.display = 'block';
-
-  // Müzik çal
-  const audio = new Audio('BillieEilish.mp3');
-  audio.loop = true;
-  audio.play();
 });
 </script>
 
