@@ -72,6 +72,7 @@ body{
   );
   opacity:0;
   z-index:-1;
+  border-radius:50%;
 }
 
 /* ÇELENK */
@@ -114,18 +115,24 @@ body{
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
-/* YAZI HAYALETSİ */
-.thoughtText {
-  position: fixed;
-  color: white;
-  font-size: 22px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 999;
-  transition: opacity 1s ease-in-out;
+/* KALP & YAZI */
+.heart{
+  position:absolute;
+  font-size:30px;
+  color:white;
+  z-index:101;
+}
+.message{
+  position:absolute;
+  color:white;
+  font-size:20px;
+  opacity:0;
+  z-index:102;
+  transition:opacity 0.3s ease;
 }
 </style>
 </head>
+
 <body>
 
 <div id="countdown">3</div>
@@ -146,7 +153,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3" loop muted></audio>
+<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -159,11 +166,6 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-
-/* SAYFA AÇILINCA KAR VE MÜZİK HAZIR */
-window.addEventListener("load",()=>{
-  introMusic.play().catch(()=>{});
-});
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -181,20 +183,20 @@ for(let i=0;i<180;i++){
 
 /* GERİ SAYIM */
 let c=3;
-window.countdownValue=c;
 const cd=document.getElementById("countdown");
 const timer=setInterval(()=>{
   c--;
-  window.countdownValue=c;
   if(c>0){
     cd.textContent=c;
+    if(c===2){
+      showHeartAndMessage();
+    }
   }else{
     clearInterval(timer);
     cd.style.display="none";
-    introMusic.muted=false;
     gift.classList.add("active");
   }
-},2500); // 2.5 saniye
+},2500);
 
 /* HEDİYE */
 gift.onclick=()=>{
@@ -233,44 +235,25 @@ gift.onclick=()=>{
   },800);
 };
 
-/* YAZILAR VE KALPLER */
-const thoughtTexts = [
-  {text:["Bir an düşün","Kalbinden geçen ile"], position: {top: "40%", left: "40%"}}, // 2. saniye
-  {text:["Gözlerini aç ve","Yola devam et"], position: {top: "40%", right: "40%"}}, // 1. saniye
-  {text:["Her şey mümkün","Ve seninle başlar"], position: {top: "30%", left: "50%", transform:"translateX(-50%)"}} // Hediyenin üstü
-];
+/* KALP & YAZI */
+function showHeartAndMessage(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.textContent="❤️";
+  heart.style.left=(gift.offsetLeft + gift.offsetWidth - 50) + "px";
+  heart.style.top=(gift.offsetTop - 20) + "px";
+  document.body.appendChild(heart);
 
-thoughtTexts.forEach((item, idx)=>{
-  const div = document.createElement("div");
-  div.classList.add("thoughtText");
-  if(item.position.left) div.style.left = item.position.left;
-  if(item.position.right) div.style.right = item.position.right;
-  if(item.position.top) div.style.top = item.position.top;
-  if(item.position.transform) div.style.transform = item.position.transform;
-  div.innerHTML = item.text.join("<br>");
-  document.body.appendChild(div);
-  item.el = div;
-});
+  const msg=document.createElement("div");
+  msg.className="message";
+  msg.textContent="Bir an düşün\nKalbinden geçen ile";
+  msg.style.left=(gift.offsetLeft + gift.offsetWidth + 10) + "px";
+  msg.style.top=(gift.offsetTop) + "px";
+  document.body.appendChild(msg);
 
-/* Geri sayım ile yazıları göster */
-const showTextsInterval = setInterval(()=>{
-  if(window.countdownValue === 2){
-    thoughtTexts[0].el.style.opacity = 0.5;
-    setTimeout(()=>thoughtTexts[0].el.style.opacity=0, 2500);
-  }
-  if(window.countdownValue === 1){
-    thoughtTexts[1].el.style.opacity = 0.5;
-    setTimeout(()=>thoughtTexts[1].el.style.opacity=0, 2500);
-  }
-}, 100);
-
-/* Hediyeye basınca son yazı */
-gift.addEventListener("click", ()=>{
-  setTimeout(()=>{
-    thoughtTexts[2].el.style.opacity = 0.5;
-    setTimeout(()=>thoughtTexts[2].el.style.opacity=0,2500);
-  },500);
-});
+  heart.animate([{transform:"translateY(0px)"},{transform:"translateY(-100px)"}],{duration:1500});
+  setTimeout(()=>{heart.remove(); msg.style.opacity=1; setTimeout(()=>msg.remove(),2500); introMusic.play();},1500);
+}
 </script>
 
 </body>
