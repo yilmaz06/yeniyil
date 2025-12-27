@@ -11,29 +11,17 @@ body{
   overflow:hidden;font-family:Arial,sans-serif;
 }
 
-/* 🎉 TUŞU */
-#partyBtn{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:150px;
-  cursor:pointer;
+/* GERİ SAYIM */
+#countdown{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:160px;font-weight:bold;
+  color:gold;
+  text-shadow:0 0 40px gold;
   z-index:100;
-  user-select:none;
-}
-#partyText{
-  position:fixed;
-  top:calc(50% + 120px);
-  left:50%;
-  transform:translateX(-50%);
-  color:white;
-  font-size:30px;
-  z-index:100;
-  font-family:Arial,sans-serif;
 }
 
-/* ORTA HEDİYE */
+/* ORTA */
 .center{
   position:fixed;
   top:50%;left:50%;
@@ -63,7 +51,13 @@ body{
   25%,100%{transform:rotate(0)}
 }
 
-/* PARLAMA */
+.text{
+  color:white;
+  font-size:22px;
+  margin-top:15px;
+}
+
+/* PARLAMA – HEDİYEYİ TAM SARAR */
 #giftGlow{
   position:absolute;
   width:420px;
@@ -71,7 +65,11 @@ body{
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse, rgba(255,215,0,.75), rgba(255,215,0,.35), rgba(255,215,0,0));
+  background:radial-gradient(ellipse,
+    rgba(255,215,0,.75),
+    rgba(255,215,0,.35),
+    rgba(255,215,0,0)
+  );
   opacity:0;
   z-index:-1;
 }
@@ -119,11 +117,8 @@ body{
 </head>
 <body>
 
-<!-- 🎉 TUŞU -->
-<div id="partyBtn">🎉</div>
-<div id="partyText">Buraya bas</div>
+<div id="countdown">3</div>
 
-<!-- ÇELENKLER -->
 <img src="1766762547682.png" class="wreath" id="w1">
 <img src="1766762547682.png" class="wreath" id="w2">
 <img src="1766762547682.png" class="wreath" id="w3">
@@ -131,7 +126,6 @@ body{
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
 
-<!-- HEDİYE -->
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
@@ -141,20 +135,24 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
+<audio id="introMusic" src="Pillibebek1.mp3" loop muted></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
 const flowerEmojis=["🌹","🌺","🌸","🪻"];
 const gift=document.getElementById("gift");
 const glow=document.getElementById("giftGlow");
+const text=document.querySelector(".text");
 const wreaths=document.querySelectorAll(".wreath");
 const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const partyBtn=document.getElementById("partyBtn");
-const partyText=document.getElementById("partyText");
+
+/* SAYFA AÇILINCA MÜZİK HAZIR */
+window.addEventListener("load",()=>{
+  introMusic.play().catch(()=>{});
+});
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -170,31 +168,22 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TIK */
-partyBtn.onclick=()=>{
-  partyBtn.style.display="none";
-  partyText.style.display="none";
-  introMusic.play().catch(()=>{});
+/* GERİ SAYIM */
+let c=3;
+const cd=document.getElementById("countdown");
+const timer=setInterval(()=>{
+  c--;
+  if(c>0){
+    cd.textContent=c;
+  }else{
+    clearInterval(timer);
+    cd.style.display="none";
+    introMusic.muted=false; /* SES AÇILIR */
+    gift.classList.add("active");
+  }
+},1500);
 
-  /* GERİ SAYIM */
-  let c=3;
-  const cd=document.createElement("div");
-  cd.id="countdown";
-  cd.textContent=c;
-  document.body.appendChild(cd);
-  const timer=setInterval(()=>{
-    c--;
-    if(c>0){
-      cd.textContent=c;
-    }else{
-      clearInterval(timer);
-      cd.style.display="none";
-      gift.classList.add("active");
-    }
-  },2500);
-};
-
-/* HEDİYE TIK */
+/* HEDİYE */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
@@ -209,10 +198,10 @@ gift.onclick=()=>{
 
   setTimeout(()=>{
     gift.style.display="none";
+    text.style.display="none";
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
-    /* TEK SEFERLİK 50 ÇİÇEK */
     for(let i=0;i<50;i++){
       const f=document.createElement("div");
       f.className="falling";
