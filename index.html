@@ -65,10 +65,13 @@ body{
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
+  background:radial-gradient(ellipse,
+    rgba(255,215,0,.75),
+    rgba(255,215,0,.35),
+    rgba(255,215,0,0)
+  );
   opacity:0;
   z-index:-1;
-  border-radius:50%;
 }
 
 /* ÇELENK */
@@ -98,25 +101,6 @@ body{
   z-index:30;
 }
 
-/* 🎉 TUŞU */
-#partyBtn{
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-size:120px;
-  cursor:pointer;
-  z-index:120;
-}
-#pressText{
-  position:fixed;
-  top:calc(50% + 80px);
-  left:50%;
-  transform:translateX(-50%);
-  color:white;
-  font-size:22px;
-  z-index:120;
-}
-
 /* KAR & ÇİÇEK */
 .falling{
   position:fixed;
@@ -128,6 +112,17 @@ body{
 @keyframes fall{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* YAZI HAYALETSİ */
+.thoughtText {
+  position: fixed;
+  color: white;
+  font-size: 22px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  transition: opacity 1s ease-in-out;
 }
 </style>
 </head>
@@ -151,11 +146,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<!-- 🎉 Tuş -->
-<div id="partyBtn">🎉</div>
-<div id="pressText">Buraya bas</div>
-
-<audio id="introMusic" src="Pillibebek1.mp3"></audio>
+<audio id="introMusic" src="Pillibebek1.mp3" loop muted></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -168,16 +159,19 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const partyBtn=document.getElementById("partyBtn");
-const pressText=document.getElementById("pressText");
+
+/* SAYFA AÇILINCA KAR VE MÜZİK HAZIR */
+window.addEventListener("load",()=>{
+  introMusic.play().catch(()=>{});
+});
 
 /* KAR */
-for(let i=0;i<150;i++){
+for(let i=0;i<180;i++){
   const s=document.createElement("div");
   s.className="falling";
   s.textContent="❄";
   s.style.left=Math.random()*100+"vw";
-  s.style.fontSize=(Math.random()*18+14)+"px";
+  s.style.fontSize=(Math.random()*18+16)+"px";
   s.style.color=Math.random()>0.5?"white":"#aaf";
   s.style.animationDuration=(Math.random()*6+6)+"s";
   s.style.opacity=Math.random();
@@ -185,88 +179,29 @@ for(let i=0;i<150;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TUŞUNA BASILINCA GERİ SAYIM */
-partyBtn.onclick=()=>{
-  partyBtn.style.display="none";
-  pressText.style.display="none";
-  introMusic.play().catch(()=>{});
+/* GERİ SAYIM */
+let c=3;
+window.countdownValue=c;
+const cd=document.getElementById("countdown");
+const timer=setInterval(()=>{
+  c--;
+  window.countdownValue=c;
+  if(c>0){
+    cd.textContent=c;
+  }else{
+    clearInterval(timer);
+    cd.style.display="none";
+    introMusic.muted=false;
+    gift.classList.add("active");
+  }
+},2500); // 2.5 saniye
 
-  let c=3;
-  const cd=document.getElementById("countdown");
-  cd.style.display="flex";
-  cd.textContent=c;
-
-  const timer=setInterval(()=>{
-    c--;
-    if(c>0){
-      cd.textContent=c;
-
-      // 2. saniye: kalp ve yazılar
-      if(c===2){
-        // Kalp yukarı çıkacak
-        const heart=document.createElement("div");
-        heart.textContent="❤️";
-        heart.style.position="fixed";
-        heart.style.left="50%";
-        heart.style.top="45%";
-        heart.style.transform="translate(-50%,0)";
-        heart.style.fontSize="40px";
-        heart.style.opacity="1";
-        heart.style.zIndex="150";
-        document.body.appendChild(heart);
-        heart.animate([
-          { transform: "translate(-50%,0)", opacity:1 },
-          { transform: "translate(-50%,-120px)", opacity:0 }
-        ],{duration:1500,easing:"ease-out"});
-        setTimeout(()=>heart.remove(),1500);
-
-        // Yazılar hediyeye yakın
-        const yazilar=[
-          "Bir an düşün","Kalbinden geçen ile",
-          "Gözlerini aç ve","Yola devam et",
-          "Her şey mümkün","Ve seninle başlar"
-        ];
-        const positions=[
-          {left:"55%",top:"40%"},
-          {left:"45%",top:"40%"},
-          {left:"55%",top:"60%"},
-          {left:"45%",top:"60%"},
-          {left:"50%",top:"35%"},
-          {left:"50%",top:"65%"}
-        ];
-        yazilar.forEach((yazi,i)=>{
-          const y=document.createElement("div");
-          y.textContent=yazi;
-          y.style.position="fixed";
-          y.style.left=positions[i].left;
-          y.style.top=positions[i].top;
-          y.style.transform="translate(-50%,-50%)";
-          y.style.fontSize="20px";
-          y.style.color="white";
-          y.style.opacity="0.3";
-          y.style.zIndex="120";
-          document.body.appendChild(y);
-          y.animate([
-            {opacity:0},{opacity:0.8},{opacity:0}
-          ],{duration:2500});
-          setTimeout(()=>y.remove(),2500);
-        });
-      }
-
-    }else{
-      clearInterval(timer);
-      cd.style.display="none";
-      introMusic.muted=false;
-      gift.classList.add("active");
-    }
-  },2500);
-};
-
-/* HEDİYE TIK */
+/* HEDİYE */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
+  /* PARLAMA */
   glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
@@ -297,6 +232,45 @@ gift.onclick=()=>{
     note.style.display="block";
   },800);
 };
+
+/* YAZILAR VE KALPLER */
+const thoughtTexts = [
+  {text:["Bir an düşün","Kalbinden geçen ile"], position: {top: "40%", left: "40%"}}, // 2. saniye
+  {text:["Gözlerini aç ve","Yola devam et"], position: {top: "40%", right: "40%"}}, // 1. saniye
+  {text:["Her şey mümkün","Ve seninle başlar"], position: {top: "30%", left: "50%", transform:"translateX(-50%)"}} // Hediyenin üstü
+];
+
+thoughtTexts.forEach((item, idx)=>{
+  const div = document.createElement("div");
+  div.classList.add("thoughtText");
+  if(item.position.left) div.style.left = item.position.left;
+  if(item.position.right) div.style.right = item.position.right;
+  if(item.position.top) div.style.top = item.position.top;
+  if(item.position.transform) div.style.transform = item.position.transform;
+  div.innerHTML = item.text.join("<br>");
+  document.body.appendChild(div);
+  item.el = div;
+});
+
+/* Geri sayım ile yazıları göster */
+const showTextsInterval = setInterval(()=>{
+  if(window.countdownValue === 2){
+    thoughtTexts[0].el.style.opacity = 0.5;
+    setTimeout(()=>thoughtTexts[0].el.style.opacity=0, 2500);
+  }
+  if(window.countdownValue === 1){
+    thoughtTexts[1].el.style.opacity = 0.5;
+    setTimeout(()=>thoughtTexts[1].el.style.opacity=0, 2500);
+  }
+}, 100);
+
+/* Hediyeye basınca son yazı */
+gift.addEventListener("click", ()=>{
+  setTimeout(()=>{
+    thoughtTexts[2].el.style.opacity = 0.5;
+    setTimeout(()=>thoughtTexts[2].el.style.opacity=0,2500);
+  },500);
+});
 </script>
 
 </body>
