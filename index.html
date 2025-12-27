@@ -11,17 +11,29 @@ body{
   overflow:hidden;font-family:Arial,sans-serif;
 }
 
-/* GERİ SAYIM */
-#countdown{
-  position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:160px;font-weight:bold;
-  color:gold;
-  text-shadow:0 0 40px gold;
+/* 🎉 TUŞU */
+#partyBtn{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:150px;
+  cursor:pointer;
   z-index:100;
+  user-select:none;
+}
+#partyText{
+  position:fixed;
+  top:calc(50% + 120px);
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-size:30px;
+  z-index:100;
+  font-family:Arial,sans-serif;
 }
 
-/* ORTA */
+/* ORTA HEDİYE */
 .center{
   position:fixed;
   top:50%;left:50%;
@@ -51,13 +63,7 @@ body{
   25%,100%{transform:rotate(0)}
 }
 
-.text{
-  color:white;
-  font-size:22px;
-  margin-top:15px;
-}
-
-/* PARLAMA – HEDİYEYİ TAM SARAR */
+/* PARLAMA */
 #giftGlow{
   position:absolute;
   width:420px;
@@ -65,14 +71,9 @@ body{
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,
-    rgba(255,215,0,.75),
-    rgba(255,215,0,.35),
-    rgba(255,215,0,0)
-  );
+  background:radial-gradient(ellipse, rgba(255,215,0,.75), rgba(255,215,0,.35), rgba(255,215,0,0));
   opacity:0;
   z-index:-1;
-  border-radius:50%;
 }
 
 /* ÇELENK */
@@ -114,29 +115,15 @@ body{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
 }
-
-/* KALP & YAZI */
-.heart{
-  position:absolute;
-  font-size:30px;
-  color:white;
-  z-index:101;
-}
-.message{
-  position:absolute;
-  color:white;
-  font-size:20px;
-  opacity:0;
-  z-index:102;
-  transition:opacity 0.3s ease;
-}
 </style>
 </head>
-
 <body>
 
-<div id="countdown">3</div>
+<!-- 🎉 TUŞU -->
+<div id="partyBtn">🎉</div>
+<div id="partyText">Buraya bas</div>
 
+<!-- ÇELENKLER -->
 <img src="1766762547682.png" class="wreath" id="w1">
 <img src="1766762547682.png" class="wreath" id="w2">
 <img src="1766762547682.png" class="wreath" id="w3">
@@ -144,6 +131,7 @@ body{
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
 
+<!-- HEDİYE -->
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
@@ -160,12 +148,13 @@ body{
 const flowerEmojis=["🌹","🌺","🌸","🪻"];
 const gift=document.getElementById("gift");
 const glow=document.getElementById("giftGlow");
-const text=document.querySelector(".text");
 const wreaths=document.querySelectorAll(".wreath");
 const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
+const partyBtn=document.getElementById("partyBtn");
+const partyText=document.getElementById("partyText");
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -181,24 +170,31 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* GERİ SAYIM */
-let c=3;
-const cd=document.getElementById("countdown");
-const timer=setInterval(()=>{
-  c--;
-  if(c>0){
-    cd.textContent=c;
-    if(c===2){
-      showHeartAndMessage();
-    }
-  }else{
-    clearInterval(timer);
-    cd.style.display="none";
-    gift.classList.add("active");
-  }
-},2500);
+/* 🎉 TIK */
+partyBtn.onclick=()=>{
+  partyBtn.style.display="none";
+  partyText.style.display="none";
+  introMusic.play().catch(()=>{});
 
-/* HEDİYE */
+  /* GERİ SAYIM */
+  let c=3;
+  const cd=document.createElement("div");
+  cd.id="countdown";
+  cd.textContent=c;
+  document.body.appendChild(cd);
+  const timer=setInterval(()=>{
+    c--;
+    if(c>0){
+      cd.textContent=c;
+    }else{
+      clearInterval(timer);
+      cd.style.display="none";
+      gift.classList.add("active");
+    }
+  },2500);
+};
+
+/* HEDİYE TIK */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
@@ -213,10 +209,10 @@ gift.onclick=()=>{
 
   setTimeout(()=>{
     gift.style.display="none";
-    text.style.display="none";
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
+    /* TEK SEFERLİK 50 ÇİÇEK */
     for(let i=0;i<50;i++){
       const f=document.createElement("div");
       f.className="falling";
@@ -234,26 +230,6 @@ gift.onclick=()=>{
     note.style.display="block";
   },800);
 };
-
-/* KALP & YAZI */
-function showHeartAndMessage(){
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.textContent="❤️";
-  heart.style.left=(gift.offsetLeft + gift.offsetWidth - 50) + "px";
-  heart.style.top=(gift.offsetTop - 20) + "px";
-  document.body.appendChild(heart);
-
-  const msg=document.createElement("div");
-  msg.className="message";
-  msg.textContent="Bir an düşün\nKalbinden geçen ile";
-  msg.style.left=(gift.offsetLeft + gift.offsetWidth + 10) + "px";
-  msg.style.top=(gift.offsetTop) + "px";
-  document.body.appendChild(msg);
-
-  heart.animate([{transform:"translateY(0px)"},{transform:"translateY(-100px)"}],{duration:1500});
-  setTimeout(()=>{heart.remove(); msg.style.opacity=1; setTimeout(()=>msg.remove(),2500); introMusic.play();},1500);
-}
 </script>
 
 </body>
