@@ -11,6 +11,26 @@ body{
   overflow:hidden;font-family:Arial,sans-serif;
 }
 
+/* 🎉 BUTON */
+#partyBtnContainer{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:100;
+  cursor:pointer;
+}
+#partyBtn{
+  font-size:120px;
+  color:gold;
+  user-select:none;
+}
+#partyText{
+  color:white;
+  font-size:32px;
+  margin-top:20px;
+  font-weight:bold;
+}
+
 /* GERİ SAYIM */
 #countdown{
   position:fixed;inset:0;
@@ -18,7 +38,8 @@ body{
   font-size:160px;font-weight:bold;
   color:gold;
   text-shadow:0 0 40px gold;
-  z-index:100;
+  z-index:90;
+  display:none;
 }
 
 /* ORTA */
@@ -28,6 +49,7 @@ body{
   transform:translate(-50%,-50%);
   text-align:center;
   z-index:20;
+  display:none;
 }
 #gift{
   width:300px;
@@ -41,7 +63,6 @@ body{
   pointer-events:auto;
   opacity:1;
 }
-
 @keyframes shake{
   0%{transform:rotate(0)}
   5%{transform:rotate(-5deg)}
@@ -65,11 +86,7 @@ body{
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,
-    rgba(255,215,0,.75),
-    rgba(255,215,0,.35),
-    rgba(255,215,0,0)
-  );
+  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
   opacity:0;
   z-index:-1;
 }
@@ -117,6 +134,12 @@ body{
 </head>
 <body>
 
+<!-- 🎉 TUŞ -->
+<div id="partyBtnContainer">
+  <div id="partyBtn">🎉</div>
+  <div id="partyText">Buraya bas</div>
+</div>
+
 <div id="countdown">3</div>
 
 <img src="1766762547682.png" class="wreath" id="w1">
@@ -135,7 +158,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3" loop muted></audio>
+<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -148,11 +171,8 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-
-/* SAYFA AÇILINCA MÜZİK HAZIR */
-window.addEventListener("load",()=>{
-  introMusic.play().catch(()=>{});
-});
+const partyBtnContainer=document.getElementById("partyBtnContainer");
+const countdown=document.getElementById("countdown");
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -168,20 +188,25 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* GERİ SAYIM */
-let c=3;
-const cd=document.getElementById("countdown");
-const timer=setInterval(()=>{
-  c--;
-  if(c>0){
-    cd.textContent=c;
-  }else{
-    clearInterval(timer);
-    cd.style.display="none";
-    introMusic.muted=false; /* SES AÇILIR */
-    gift.classList.add("active");
-  }
-},1500);
+/* 🎉 BASILDIĞINDA */
+partyBtnContainer.onclick=()=>{
+  partyBtnContainer.style.display="none";
+  countdown.style.display="flex";
+  introMusic.play().catch(()=>{});
+
+  /* GERİ SAYIM */
+  let c=3;
+  const timer=setInterval(()=>{
+    c--;
+    if(c>0){
+      countdown.textContent=c;
+    }else{
+      clearInterval(timer);
+      countdown.style.display="none";
+      gift.classList.add("active");
+    }
+  },1500);
+};
 
 /* HEDİYE */
 gift.onclick=()=>{
