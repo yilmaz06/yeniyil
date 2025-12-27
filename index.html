@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Sürpriz 🎁</title>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
@@ -115,14 +114,22 @@ body{
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
-/* KALP & YAZI */
-.heartText{
-  position:fixed;
-  font-weight:bold;
+/* YAZI & KALP */
+.ghostText{
+  position:absolute;
+  font-size:24px;
+  color:white;
+  opacity:0.25;
+  z-index:21;
+  transition:opacity 0.5s ease;
   pointer-events:none;
-  z-index:150;
-  text-align:center;
-  line-height:1.2;
+}
+.ghostHeart{
+  position:absolute;
+  font-size:28px;
+  color:#fff;
+  z-index:21;
+  pointer-events:none;
 }
 </style>
 </head>
@@ -147,7 +154,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3"></audio>
+<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -161,7 +168,7 @@ const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-/* KAR (SÜREKLİ) */
+/* KAR */
 for(let i=0;i<180;i++){
   const s=document.createElement("div");
   s.className="falling";
@@ -175,93 +182,64 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* GÖSTERİM: 🎉 */
-const startBtn = document.createElement("div");
-startBtn.style.position="fixed";
-startBtn.style.left="50%";
-startBtn.style.top="50%";
-startBtn.style.transform="translate(-50%,-50%)";
-startBtn.style.fontSize="150px";
-startBtn.style.cursor="pointer";
-startBtn.style.zIndex="200";
-startBtn.textContent="🎉";
-document.body.appendChild(startBtn);
+/* GHOST YAZI VE KALP ELEMENTLERİ */
+const ghostTexts=[
+  {lines:["Bir an düşün","Kalbinden geçen ile"], pos:{x:-80,y:-80}},
+  {lines:["Gözlerini aç ve","Yola devam et"], pos:{x:80,y:80}},
+  {lines:["Her şey mümkün","Ve seninle başlar"], pos:{x:0,y:-120}}
+];
+let ghostElems=[];
 
-const startText=document.createElement("div");
-startText.textContent="Buraya bas";
-startText.style.position="fixed";
-startText.style.top="calc(50% + 120px)";
-startText.style.left="50%";
-startText.style.transform="translateX(-50%)";
-startText.style.color="white";
-startText.style.fontSize="24px";
-startText.style.zIndex="200";
-document.body.appendChild(startText);
+/* GERİ SAYIM */
+let c=3;
+const cd=document.getElementById("countdown");
+const timer=setInterval(()=>{
+  c--;
+  if(c>0){
+    cd.textContent=c;
 
-/* Geri sayım ve yazılar fonksiyonu */
-function showHeartText(line1,line2,size){
-  const giftRect = gift.getBoundingClientRect();
+    // 2 ve 1 sayımında yazılar ve kalp
+    if(c==2 || c==1){
+      const idx=c==2?0:1;
+      ghostElems[idx]=[];
+      ghostTexts[idx].lines.forEach((line,i)=>{
+        const span=document.createElement("div");
+        span.className="ghostText";
+        span.textContent=line;
+        span.style.left=`calc(50% + ${ghostTexts[idx].pos.x + i*5}px)`;
+        span.style.top=`calc(50% + ${ghostTexts[idx].pos.y + i*25}px)`;
+        document.body.appendChild(span);
+        // Yavaşça görün ve kaybol
+        setTimeout(()=>{span.style.opacity=1;},100);
+        setTimeout(()=>{span.style.opacity=0; span.remove();},2500);
+        ghostElems[idx].push(span);
+      });
 
-  // Kalp dikkat için koyu renk ve yukarı hareket
-  const heart=document.createElement("div");
-  heart.className="heartText";
-  heart.style.fontSize=size;
-  heart.style.color="#222";
-  heart.style.left = (giftRect.left + giftRect.width*0.1 + Math.random()*giftRect.width*0.8) + "px";
-  heart.style.top = (giftRect.top - 60 + Math.random()*30) + "px";
-  heart.innerHTML="❤️";
-  document.body.appendChild(heart);
-
-  // Yukarı çıkma animasyonu
-  heart.animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(-50px)' }], { duration: 800, fill: 'forwards' });
-
-  // Yazı
-  const textDiv=document.createElement("div");
-  textDiv.className="heartText";
-  textDiv.style.fontSize=size;
-  textDiv.style.color="rgba(255,255,255,0)";
-  textDiv.style.left = heart.style.left;
-  textDiv.style.top = (parseInt(heart.style.top)+30) + "px";
-  textDiv.innerHTML=line1+"<br>"+line2;
-  document.body.appendChild(textDiv);
-
-  // Hayalet efekti
-  setTimeout(()=>{
-    textDiv.style.transition="opacity 0.5s";
-    textDiv.style.color="rgba(255,255,255,0.7)";
-  },800);
-  setTimeout(()=>{
-    textDiv.style.transition="opacity 0.5s";
-    textDiv.style.color="rgba(255,255,255,0)";
-    heart.remove();
-    textDiv.remove();
-  },3300);
-}
-
-/* Start butonuna basılınca */
-startBtn.onclick = ()=>{
-  startBtn.remove();
-  startText.remove();
-  introMusic.play().catch(()=>{});
-
-  let c=3;
-  const cd=document.getElementById("countdown");
-  cd.style.display="flex";
-  cd.textContent=c;
-
-  const timer=setInterval(()=>{
-    c--;
-    if(c==2) showHeartText("Bir an düşün","Kalbinden geçen ile","20px");
-    if(c==1) showHeartText("Gözlerini aç ve","Yola devam et","20px");
-    if(c>0){
-      cd.textContent=c;
-    }else{
-      clearInterval(timer);
-      cd.style.display="none";
-      gift.classList.add("active");
+      // Kalp
+      const heart=document.createElement("div");
+      heart.className="ghostHeart";
+      heart.textContent="❤️";
+      heart.style.left=`calc(50% + ${ghostTexts[idx].pos.x}px)`;
+      heart.style.top=`calc(50% + ${ghostTexts[idx].pos.y + 40}px)`;
+      document.body.appendChild(heart);
+      let topPos=parseFloat(heart.style.top);
+      let interval=setInterval(()=>{
+        topPos-=2; // yukarı çıkış
+        heart.style.top=topPos+"px";
+      },30);
+      setTimeout(()=>{
+        clearInterval(interval);
+        heart.remove();
+      },1500);
     }
-  },2500);
-};
+
+  }else{
+    clearInterval(timer);
+    cd.style.display="none";
+    gift.classList.add("active");
+    introMusic.play().catch(()=>{});
+  }
+},2500);
 
 /* HEDİYE TIK */
 gift.onclick=()=>{
