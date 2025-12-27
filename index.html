@@ -58,24 +58,48 @@ body{
   margin-top:15px;
 }
 
-/* 🔆 YUVARLAK & YUMUŞAK PARLAMA */
+/* PARLAMA – YUVARLAK & HEDİYEYİ SARAR */
 #giftGlow{
   position:absolute;
-  width:480px;
-  height:480px;
+  width:420px;
+  height:420px;
   left:50%;
   top:50%;
-  transform:translate(-50%,-50%) scale(0.85);
-  border-radius:50%;
+  transform:translate(-50%,-50%);
   background:radial-gradient(circle,
-    rgba(255,215,0,0.7) 0%,
-    rgba(255,215,0,0.35) 45%,
-    rgba(255,215,0,0.15) 65%,
-    rgba(255,215,0,0) 75%
+    rgba(255,215,0,.75),
+    rgba(255,215,0,.35),
+    rgba(255,215,0,0)
   );
   opacity:0;
-  filter:blur(2px);
   z-index:-1;
+}
+
+/* ÇELENK */
+.wreath{position:fixed;z-index:5}
+#w1{top:80px;left:calc(50% - 450px);width:320px}
+#w2{top:90px;left:calc(50% - 150px);width:350px}
+#w3{top:70px;left:calc(50% + 150px);width:330px}
+#w4{bottom:100px;left:calc(50% - 450px);width:340px}
+#w5{bottom:80px;left:calc(50% - 150px);width:360px}
+#w6{bottom:90px;left:calc(50% + 150px);width:330px}
+
+/* BUKET */
+#bouquet{
+  position:fixed;
+  top:38%;left:50%;
+  transform:translate(-50%,-50%);
+  width:1000px;
+  display:none;
+  z-index:30;
+}
+#note{
+  position:fixed;
+  top:52%;left:50%;
+  transform:translateX(-50%);
+  width:600px;
+  display:none;
+  z-index:30;
 }
 
 /* KAR & ÇİÇEK */
@@ -97,25 +121,54 @@ body{
 
 <div id="countdown">3</div>
 
+<img src="1766762547682.png" class="wreath" id="w1">
+<img src="1766762547682.png" class="wreath" id="w2">
+<img src="1766762547682.png" class="wreath" id="w3">
+<img src="1766762547682.png" class="wreath" id="w4">
+<img src="1766762547682.png" class="wreath" id="w5">
+<img src="1766762547682.png" class="wreath" id="w6">
+
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
   <div class="text">Hediyeniz burada 🎁</div>
 </div>
 
+<img src="1766680551797.png" id="bouquet">
+<img src="1766769594942.png" id="note">
+
 <audio id="introMusic" src="Pillibebek.mp3" loop muted></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
+const flowerEmojis=["🌹","🌺","🌸","🪻"];
 const gift=document.getElementById("gift");
 const glow=document.getElementById("giftGlow");
+const text=document.querySelector(".text");
+const wreaths=document.querySelectorAll(".wreath");
+const bouquet=document.getElementById("bouquet");
+const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-/* SAYFA AÇILINCA MÜZİK HAZIR */
+/* SAYFA AÇILINCA MÜZİK */
 window.addEventListener("load",()=>{
   introMusic.play().catch(()=>{});
 });
+
+/* KAR */
+for(let i=0;i<180;i++){
+  const s=document.createElement("div");
+  s.className="falling";
+  s.textContent="❄";
+  s.style.left=Math.random()*100+"vw";
+  s.style.fontSize=(Math.random()*18+16)+"px";
+  s.style.color=Math.random()>0.5?"white":"#aaf";
+  s.style.animationDuration=(Math.random()*6+6)+"s";
+  s.style.opacity=Math.random();
+  s.style.animationIterationCount="infinite";
+  document.body.appendChild(s);
+}
 
 /* GERİ SAYIM */
 let c=3;
@@ -137,20 +190,36 @@ gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* 🌟 PARLAMA – YAVAŞ GELİR, HIZLI GİDER */
-  glow.style.transition="opacity 1s ease, transform 1s ease";
+  /* 🔆 PARLAMA – SADECE BURASI DEĞİŞTİ (BİRAZ DAHA HIZLI) */
+  glow.style.transition="opacity .7s ease-in";
   glow.style.opacity=1;
-  glow.style.transform="translate(-50%,-50%) scale(1)";
-
   setTimeout(()=>{
-    glow.style.transition="opacity .25s ease, transform .25s ease";
+    glow.style.transition="opacity .2s ease-out";
     glow.style.opacity=0;
-    glow.style.transform="translate(-50%,-50%) scale(1.15)";
-  },850);
+  },550);
 
   setTimeout(()=>{
+    gift.style.display="none";
+    text.style.display="none";
+    wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
-  },900);
+
+    for(let i=0;i<37;i++){
+      const f=document.createElement("div");
+      f.className="falling";
+      f.textContent=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+      f.style.left=Math.random()*100+"vw";
+      f.style.fontSize=(Math.random()*40+40)+"px";
+      const dur=Math.random()*4+4;
+      f.style.animationDuration=dur+"s";
+      f.style.top="-200px";
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),dur*1000);
+    }
+
+    bouquet.style.display="block";
+    note.style.display="block";
+  },800);
 };
 </script>
 
