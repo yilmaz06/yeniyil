@@ -65,13 +65,10 @@ body{
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,
-    rgba(255,215,0,.75),
-    rgba(255,215,0,.35),
-    rgba(255,215,0,0)
-  );
+  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
   opacity:0;
   z-index:-1;
+  border-radius:50%;
 }
 
 /* ÇELENK */
@@ -101,6 +98,25 @@ body{
   z-index:30;
 }
 
+/* 🎉 TUŞU */
+#partyBtn{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:120px;
+  cursor:pointer;
+  z-index:120;
+}
+#pressText{
+  position:fixed;
+  top:calc(50% + 80px);
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-size:22px;
+  z-index:120;
+}
+
 /* KAR & ÇİÇEK */
 .falling{
   position:fixed;
@@ -113,27 +129,8 @@ body{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
 }
-
-/* YAZI & KALP */
-.ghostText{
-  position:absolute;
-  font-size:24px;
-  color:white;
-  opacity:0.25;
-  z-index:21;
-  transition:opacity 0.5s ease;
-  pointer-events:none;
-}
-.ghostHeart{
-  position:absolute;
-  font-size:28px;
-  color:#fff;
-  z-index:21;
-  pointer-events:none;
-}
 </style>
 </head>
-
 <body>
 
 <div id="countdown">3</div>
@@ -154,7 +151,11 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
+<!-- 🎉 Tuş -->
+<div id="partyBtn">🎉</div>
+<div id="pressText">Buraya bas</div>
+
+<audio id="introMusic" src="Pillibebek1.mp3"></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -167,14 +168,16 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
+const partyBtn=document.getElementById("partyBtn");
+const pressText=document.getElementById("pressText");
 
 /* KAR */
-for(let i=0;i<180;i++){
+for(let i=0;i<150;i++){
   const s=document.createElement("div");
   s.className="falling";
   s.textContent="❄";
   s.style.left=Math.random()*100+"vw";
-  s.style.fontSize=(Math.random()*18+16)+"px";
+  s.style.fontSize=(Math.random()*18+14)+"px";
   s.style.color=Math.random()>0.5?"white":"#aaf";
   s.style.animationDuration=(Math.random()*6+6)+"s";
   s.style.opacity=Math.random();
@@ -182,71 +185,88 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* GHOST YAZI VE KALP ELEMENTLERİ */
-const ghostTexts=[
-  {lines:["Bir an düşün","Kalbinden geçen ile"], pos:{x:-80,y:-80}},
-  {lines:["Gözlerini aç ve","Yola devam et"], pos:{x:80,y:80}},
-  {lines:["Her şey mümkün","Ve seninle başlar"], pos:{x:0,y:-120}}
-];
-let ghostElems=[];
+/* 🎉 TUŞUNA BASILINCA GERİ SAYIM */
+partyBtn.onclick=()=>{
+  partyBtn.style.display="none";
+  pressText.style.display="none";
+  introMusic.play().catch(()=>{});
 
-/* GERİ SAYIM */
-let c=3;
-const cd=document.getElementById("countdown");
-const timer=setInterval(()=>{
-  c--;
-  if(c>0){
-    cd.textContent=c;
+  let c=3;
+  const cd=document.getElementById("countdown");
+  cd.style.display="flex";
+  cd.textContent=c;
 
-    // 2 ve 1 sayımında yazılar ve kalp
-    if(c==2 || c==1){
-      const idx=c==2?0:1;
-      ghostElems[idx]=[];
-      ghostTexts[idx].lines.forEach((line,i)=>{
-        const span=document.createElement("div");
-        span.className="ghostText";
-        span.textContent=line;
-        span.style.left=`calc(50% + ${ghostTexts[idx].pos.x + i*5}px)`;
-        span.style.top=`calc(50% + ${ghostTexts[idx].pos.y + i*25}px)`;
-        document.body.appendChild(span);
-        // Yavaşça görün ve kaybol
-        setTimeout(()=>{span.style.opacity=1;},100);
-        setTimeout(()=>{span.style.opacity=0; span.remove();},2500);
-        ghostElems[idx].push(span);
-      });
+  const timer=setInterval(()=>{
+    c--;
+    if(c>0){
+      cd.textContent=c;
 
-      // Kalp
-      const heart=document.createElement("div");
-      heart.className="ghostHeart";
-      heart.textContent="❤️";
-      heart.style.left=`calc(50% + ${ghostTexts[idx].pos.x}px)`;
-      heart.style.top=`calc(50% + ${ghostTexts[idx].pos.y + 40}px)`;
-      document.body.appendChild(heart);
-      let topPos=parseFloat(heart.style.top);
-      let interval=setInterval(()=>{
-        topPos-=2; // yukarı çıkış
-        heart.style.top=topPos+"px";
-      },30);
-      setTimeout(()=>{
-        clearInterval(interval);
-        heart.remove();
-      },1500);
+      // 2. saniye: kalp ve yazılar
+      if(c===2){
+        // Kalp yukarı çıkacak
+        const heart=document.createElement("div");
+        heart.textContent="❤️";
+        heart.style.position="fixed";
+        heart.style.left="50%";
+        heart.style.top="45%";
+        heart.style.transform="translate(-50%,0)";
+        heart.style.fontSize="40px";
+        heart.style.opacity="1";
+        heart.style.zIndex="150";
+        document.body.appendChild(heart);
+        heart.animate([
+          { transform: "translate(-50%,0)", opacity:1 },
+          { transform: "translate(-50%,-120px)", opacity:0 }
+        ],{duration:1500,easing:"ease-out"});
+        setTimeout(()=>heart.remove(),1500);
+
+        // Yazılar hediyeye yakın
+        const yazilar=[
+          "Bir an düşün","Kalbinden geçen ile",
+          "Gözlerini aç ve","Yola devam et",
+          "Her şey mümkün","Ve seninle başlar"
+        ];
+        const positions=[
+          {left:"55%",top:"40%"},
+          {left:"45%",top:"40%"},
+          {left:"55%",top:"60%"},
+          {left:"45%",top:"60%"},
+          {left:"50%",top:"35%"},
+          {left:"50%",top:"65%"}
+        ];
+        yazilar.forEach((yazi,i)=>{
+          const y=document.createElement("div");
+          y.textContent=yazi;
+          y.style.position="fixed";
+          y.style.left=positions[i].left;
+          y.style.top=positions[i].top;
+          y.style.transform="translate(-50%,-50%)";
+          y.style.fontSize="20px";
+          y.style.color="white";
+          y.style.opacity="0.3";
+          y.style.zIndex="120";
+          document.body.appendChild(y);
+          y.animate([
+            {opacity:0},{opacity:0.8},{opacity:0}
+          ],{duration:2500});
+          setTimeout(()=>y.remove(),2500);
+        });
+      }
+
+    }else{
+      clearInterval(timer);
+      cd.style.display="none";
+      introMusic.muted=false;
+      gift.classList.add("active");
     }
-
-  }else{
-    clearInterval(timer);
-    cd.style.display="none";
-    gift.classList.add("active");
-    introMusic.play().catch(()=>{});
-  }
-},2500);
+  },2500);
+};
 
 /* HEDİYE TIK */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* PARLAMA */
   glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
