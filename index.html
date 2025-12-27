@@ -130,7 +130,7 @@ body{
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
-  <div class="text" style="color:white;font-size:22px;">Hediyeniz burada 🎁</div>
+  <div class="text" style="color:white;font-size:24px;">Hediyeniz burada 🎁</div>
 </div>
 
 <img src="1766680551797.png" id="bouquet">
@@ -150,7 +150,7 @@ const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-/* KAR */
+/* SAYFA AÇILINCA KAR */
 for(let i=0;i<300;i++){
   const s=document.createElement("div");
   s.className="falling";
@@ -165,14 +165,14 @@ for(let i=0;i<300;i++){
 }
 
 /* GERİ SAYIM */
-let countdownNumber=3;
+let c=3;
 const cd=document.getElementById("countdown");
 const timer=setInterval(()=>{
-  countdownNumber--;
-  if(countdownNumber>0){
-    cd.textContent=countdownNumber;
-    if(countdownNumber===2){
-      showHeartsAndTexts(); // Geri sayım 2'de kalp ve yazı
+  c--;
+  if(c>0){
+    cd.textContent=c;
+    if(c===2){
+      showHeartAndText(); // 2. saniyede kalp ve yazılar
       introMusic.muted=false;
       introMusic.play().catch(()=>{});
     }
@@ -188,7 +188,6 @@ gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* PARLAMA */
   glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
@@ -221,15 +220,15 @@ gift.onclick=()=>{
 };
 
 /* KALP VE YAZILAR */
-function showHeartsAndTexts() {
-  const positions = [
-    {x: gift.offsetLeft - 70, y: gift.offsetTop + 20}, // Sol
-    {x: gift.offsetLeft + gift.offsetWidth + 20, y: gift.offsetTop + 20}, // Sağ
-    {x: gift.offsetLeft + gift.offsetWidth/2 - 40, y: gift.offsetTop - 60} // Üst
+function showHeartAndText(){
+  const giftRect=gift.getBoundingClientRect();
+  const positions=[
+    {x:giftRect.left-70, y:giftRect.top+50, text:"Sol Yazı"}, // Sol
+    {x:giftRect.right+10, y:giftRect.top+50, text:"Sağ Yazı"},  // Sağ
+    {x:giftRect.left + giftRect.width/2 -30, y:giftRect.top-50, text:"Üst Yazı"} // Üst
   ];
-  const texts = ["Bir an düşün", "Gözlerini aç ve", "Her şey mümkün"];
 
-  positions.forEach((pos,i)=>{
+  positions.forEach(pos=>{
     // Kalp
     const heart=document.createElement("div");
     heart.textContent="❤️";
@@ -240,35 +239,32 @@ function showHeartsAndTexts() {
     heart.style.color="red";
     document.body.appendChild(heart);
 
-    // Kalp yukarı süzülme
     heart.animate([
-      {transform:"translateY(0px)",opacity:1},
-      {transform:"translateY(-50px)",opacity:0}
-    ],{duration:1500,easing:"ease-out"});
+      {transform:"translateY(0px)", opacity:1},
+      {transform:"translateY(-50px)", opacity:0}
+    ], {duration:1500, easing:"ease-out"});
     setTimeout(()=>heart.remove(),1500);
 
     // Yazı
-    const textDiv=document.createElement("div");
-    textDiv.textContent=texts[i];
-    textDiv.style.position="fixed";
-    textDiv.style.left=pos.x+"px";
-    textDiv.style.top=(pos.y+30)+"px";
-    textDiv.style.color="white";
-    textDiv.style.fontSize="18px";
-    textDiv.style.opacity=0;
-    document.body.appendChild(textDiv);
+    const txt=document.createElement("div");
+    txt.textContent=pos.text;
+    txt.style.position="fixed";
+    txt.style.left=pos.x+"px";
+    txt.style.top=(pos.y+30)+"px";
+    txt.style.color="white";
+    txt.style.fontSize="18px";
+    txt.style.opacity=0;
+    document.body.appendChild(txt);
 
-    // Hayalet efekti
-    textDiv.animate([
+    txt.animate([
       {opacity:0},
       {opacity:1},
       {opacity:1},
       {opacity:0}
-    ],{duration:2500,easing:"ease-in-out"});
-    setTimeout(()=>textDiv.remove(),2500);
+    ], {duration:2500, easing:"ease-in-out"});
+    setTimeout(()=>txt.remove(),2500);
   });
 }
 </script>
-
 </body>
 </html>
