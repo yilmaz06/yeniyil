@@ -2,165 +2,192 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Hediyeniz burada 🎁</title>
+<title>Sürpriz 🎁</title>
 <style>
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  width:100vw;
+  height:100vh;
+  background: linear-gradient(135deg,#8b0000,#000000);
   overflow:hidden;
-  background:radial-gradient(circle at top,#300000,#000);
-  font-family:Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  position: relative;
 }
 
-/* KAR */
-.snow{
+/* GERİ SAYIM */
+#countdown{
   position:fixed;
-  top:-10px;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:rgba(200,220,255,0.9);
-  pointer-events:none;
-  animation:fall linear infinite;
-}
-@keyframes fall{
-  to{
-    transform:translateY(110vh) rotate(360deg);
-  }
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:160px;
+  font-weight:bold;
+  color:gold;
+  z-index:100;
+  text-shadow:0 0 30px gold;
 }
 
-/* ÇİÇEK */
-.flower{
-  position:fixed;
-  top:-120px;
-  font-size:64px;
-  pointer-events:none;
-  animation:fallFlower linear forwards;
-}
-@keyframes fallFlower{
-  to{
-    transform:translateY(120vh) rotate(720deg);
-    opacity:0;
-  }
-}
-
-/* KALP */
-.heart{
-  position:fixed;
-  bottom:-60px;
-  font-size:40px;
-  animation:heartMove linear infinite;
-  opacity:0.8;
-}
-@keyframes heartMove{
-  to{
-    transform:translateY(-120vh) translateX(60px);
-    opacity:0;
-  }
-}
-
-/* MERKEZ */
-.center{
-  position:absolute;
+/* TAM ORTA HEDİYE */
+.center {
+  position: fixed;
   top:50%;
   left:50%;
-  transform:translate(-50%,-50%);
+  transform: translate(-50%,-50%);
   text-align:center;
-  z-index:10;
+  z-index:20;
 }
-
-.gift{
-  font-size:110px;
+#gift {
+  width:300px;
   cursor:pointer;
-  transition:transform .4s, filter .4s;
+  animation: shake 2.5s infinite;
+  pointer-events:none;
+  opacity:.4;
 }
-.gift:hover{transform:scale(1.1);}
-.gift.glow{
-  filter:drop-shadow(0 0 40px gold);
-  transform:scale(1.25);
+#gift.active{
+  pointer-events:auto;
+  opacity:1;
+}
+@keyframes shake {
+  0% { transform: rotate(0deg);}
+  5% { transform: rotate(-5deg);}
+  10% { transform: rotate(5deg);}
+  15% { transform: rotate(-5deg);}
+  20% { transform: rotate(5deg);}
+  25% { transform: rotate(0deg);}
+  100% { transform: rotate(0deg);}
+}
+.text { color:white; font-size:22px; margin-top:15px; }
+
+/* ÇELENKLER */
+.wreath { position: fixed; z-index:5; }
+#w1 { top:80px; left:calc(50% - 450px); width:320px; }
+#w2 { top:90px; left:calc(50% - 150px); width:350px; }
+#w3 { top:70px; left:calc(50% + 150px); width:330px; }
+#w4 { bottom:100px; left:calc(50% - 450px); width:340px; }
+#w5 { bottom:80px; left:calc(50% - 150px); width:360px; }
+#w6 { bottom:90px; left:calc(50% + 150px); width:330px; }
+
+/* Buket ve not */
+#bouquet {
+  position: fixed;
+  top:38%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  width:1000px;
+  display:none;
+  z-index:30;
+}
+#note {
+  position: fixed;
+  top:52%;
+  left:50%;
+  transform: translateX(-50%);
+  display:none;
+  z-index:30;
+  width:600px;
 }
 
-.text{
-  color:gold;
-  font-size:28px;
-  margin-top:15px;
+/* Kar ve çiçekler */
+.falling {
+  position: fixed;
+  z-index:50;
+  user-select:none;
+  pointer-events:none;
+  animation-name: fall;
+  animation-timing-function: linear;
 }
-
-/* GİZLİ */
-.hidden{display:none;}
+@keyframes fall {
+  0% { transform: translateY(-150px); }
+  100% { transform: translateY(110vh); }
+}
 </style>
 </head>
 <body>
 
+<div id="countdown">3</div>
+
+<!-- ÇELENKLER -->
+<img src="1766762547682.png" class="wreath" id="w1">
+<img src="1766762547682.png" class="wreath" id="w2">
+<img src="1766762547682.png" class="wreath" id="w3">
+<img src="1766762547682.png" class="wreath" id="w4">
+<img src="1766762547682.png" class="wreath" id="w5">
+<img src="1766762547682.png" class="wreath" id="w6">
+
+<!-- HEDİYE -->
 <div class="center">
-  <div id="gift" class="gift">🎁</div>
-  <div id="giftText" class="text">Hediyeniz burada 🎁</div>
+  <img src="1766682404708.png" id="gift">
+  <div class="text">Hediyeniz burada 🎁</div>
 </div>
 
+<img src="1766680551797.png" id="bouquet">
+<img src="1766769594942.png" id="note">
+
 <!-- MÜZİKLER -->
-<audio id="musicIntro" src="Pillibebek.mp3" autoplay loop></audio>
-<audio id="musicMain" loop></audio>
+<audio id="introMusic" src="Pillibebek.mp3" autoplay></audio>
+<audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
-/* KAR SÜREKLİ */
-function snow(){
-  const s=document.createElement("div");
-  s.className="snow";
-  s.style.left=Math.random()*100+"vw";
-  const size=Math.random()*6+6;
-  s.style.width=s.style.height=size+"px";
-  s.style.animationDuration=Math.random()*5+6+"s";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),11000);
-}
-setInterval(snow,100);
-
-/* KALPLER */
-for(let i=0;i<6;i++){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤️";
-  h.style.left=(i<3?5:90)+"vw";
-  h.style.fontSize=Math.random()*30+30+"px";
-  h.style.animationDuration=Math.random()*6+6+"s";
-  h.style.animationDelay=Math.random()*3+"s";
-  document.body.appendChild(h);
-}
-
-/* HEDİYE TIK */
+const flowerEmojis=["🌹","🌺","🌸","🪻"];
 const gift=document.getElementById("gift");
-const giftText=document.getElementById("giftText");
-const intro=document.getElementById("musicIntro");
-const main=document.getElementById("musicMain");
+const text=document.querySelector(".text");
+const wreaths=document.querySelectorAll(".wreath");
+const bouquet=document.getElementById("bouquet");
+const note=document.getElementById("note");
+const introMusic=document.getElementById("introMusic");
+const mainMusic=document.getElementById("mainMusic");
 
+/* KAR */
+for(let i=0;i<150;i++){
+  const s=document.createElement("div");
+  s.className="falling";
+  s.textContent="❄";
+  s.style.left=Math.random()*100+"vw";
+  s.style.fontSize=(Math.random()*15+15)+"px";
+  s.style.color=Math.random()>0.5?"white":"#aaf";
+  s.style.animationDuration=(Math.random()*5+5)+"s";
+  s.style.opacity=Math.random();
+  s.style.animationIterationCount="infinite";
+  document.body.appendChild(s);
+}
+
+/* GERİ SAYIM */
+let c=3;
+const cd=document.getElementById("countdown");
+const t=setInterval(()=>{
+  c--;
+  if(c>0){
+    cd.textContent=c;
+  }else{
+    clearInterval(t);
+    cd.style.display="none";
+    gift.classList.add("active");
+  }
+},1000);
+
+/* HEDİYE */
 gift.onclick=()=>{
-  gift.classList.add("glow");
-  giftText.classList.add("hidden");
-  intro.pause();
-  intro.currentTime=0;
+  gift.style.display="none";
+  text.style.display="none";
+  wreaths.forEach(w=>w.style.display="none");
+  introMusic.pause();
+  mainMusic.play();
 
-  setTimeout(()=>{
-    main.src="Pillibebek.mp3";
-    main.play();
-    dropFlowers();
-  },800);
-};
-
-/* ÇİÇEKLER – 32 ADET */
-function dropFlowers(){
   for(let i=0;i<32;i++){
     const f=document.createElement("div");
-    f.className="flower";
-    f.innerHTML="🌹";
+    f.className="falling";
+    f.textContent=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
     f.style.left=Math.random()*100+"vw";
-    f.style.fontSize=Math.random()*50+60+"px";
-    f.style.animationDuration=Math.random()*4+6+"s";
+    f.style.fontSize=(Math.random()*40+40)+"px";
+    f.style.animationDuration=(Math.random()*4+4)+"s";
+    f.style.top="-200px";
     document.body.appendChild(f);
-    setTimeout(()=>f.remove(),10000);
   }
-}
+
+  bouquet.style.display="block";
+  note.style.display="block";
+};
 </script>
 
 </body>
