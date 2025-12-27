@@ -41,6 +41,7 @@ body{
   pointer-events:auto;
   opacity:1;
 }
+
 @keyframes shake{
   0%{transform:rotate(0)}
   5%{transform:rotate(-5deg)}
@@ -100,17 +101,6 @@ body{
   z-index:30;
 }
 
-/* KALP & YAZI */
-.ghostText, .heart{
-  position:fixed;
-  opacity:0;
-  color:white;
-  font-weight:bold;
-  text-shadow:0 0 10px gold;
-  pointer-events:none;
-  z-index:90;
-}
-
 /* KAR & ÇİÇEK */
 .falling{
   position:fixed;
@@ -125,6 +115,7 @@ body{
 }
 </style>
 </head>
+
 <body>
 
 <div id="countdown">3</div>
@@ -145,7 +136,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek.mp3" loop></audio>
+<audio id="introMusic" src="Pillibebek.mp3" loop muted></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -159,7 +150,7 @@ const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-/* KAR */
+/* KAR (SÜREKLİ) */
 for(let i=0;i<180;i++){
   const s=document.createElement("div");
   s.className="falling";
@@ -173,74 +164,26 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* GERİ SAYIM + KALP & YAZI */
+/* GERİ SAYIM */
 let c=3;
 const cd=document.getElementById("countdown");
-
-function showGhostText(textContent, left, top, duration){
-  const t=document.createElement("div");
-  t.className="ghostText";
-  t.style.left=left;
-  t.style.top=top;
-  t.textContent=textContent;
-  document.body.appendChild(t);
-  t.style.transition="opacity 0.5s";
-  t.style.opacity=1;
-  setTimeout(()=>{
-    t.style.opacity=0;
-    setTimeout(()=>t.remove(),500);
-  },duration);
-}
-
-function showHeart(left, top, duration){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.style.left=left;
-  h.style.top=top;
-  h.style.fontSize="40px";
-  h.textContent="❤️";
-  document.body.appendChild(h);
-  h.style.transition="opacity 0.3s";
-  h.style.opacity=1;
-  setTimeout(()=>{
-    h.style.opacity=0;
-    setTimeout(()=>h.remove(),duration);
-  },duration/2);
-}
-
-const countdownInterval=setInterval(()=>{
+const timer=setInterval(()=>{
+  if(c===3){
+    // Geri sayım başladığında ilk müzik başlasın
+    introMusic.muted=false;
+    introMusic.play().catch(()=>{});
+  }
   c--;
   if(c>0){
     cd.textContent=c;
-
-    if(c===2){
-      // sol üst
-      showHeart("10px","20px",1500);
-      showGhostText("Bir an düşün","10px","60px",2500);
-      showGhostText("Kalbinden geçen ile","10px","100px",2500);
-
-      // müzik başlat
-      introMusic.play().catch(()=>{});
-    }
-
-    if(c===1){
-      // sağ alt
-      showHeart("calc(100% - 50px)","calc(100% - 60px)",1500);
-      showGhostText("Gözlerini aç ve","calc(100% - 250px)","calc(100% - 100px)",2500);
-      showGhostText("Yola devam et","calc(100% - 250px)","calc(100% - 60px)",2500);
-    }
   }else{
-    clearInterval(countdownInterval);
+    clearInterval(timer);
     cd.style.display="none";
-    // hediyeyi aktif et
     gift.classList.add("active");
-    // üstündeki yazı
-    showGhostText("Her şey mümkün","calc(50% - 150px)","40%",2500);
-    showGhostText("Ve seninle başlar","calc(50% - 150px)","45%",2500);
   }
-},2500);
+},1500);
 
-/* HEDİYE TIK */
+/* HEDİYE */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
@@ -277,5 +220,6 @@ gift.onclick=()=>{
   },800);
 };
 </script>
+
 </body>
 </html>
