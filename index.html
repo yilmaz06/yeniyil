@@ -11,26 +11,6 @@ body{
   overflow:hidden;font-family:Arial,sans-serif;
 }
 
-/* 🎉 BUTON */
-#partyBtnContainer{
-  position:fixed;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-  z-index:100;
-  cursor:pointer;
-}
-#partyBtn{
-  font-size:120px;
-  color:gold;
-  user-select:none;
-}
-#partyText{
-  color:white;
-  font-size:32px;
-  margin-top:20px;
-  font-weight:bold;
-}
-
 /* GERİ SAYIM */
 #countdown{
   position:fixed;inset:0;
@@ -38,7 +18,7 @@ body{
   font-size:160px;font-weight:bold;
   color:gold;
   text-shadow:0 0 40px gold;
-  z-index:90;
+  z-index:100;
   display:none;
 }
 
@@ -49,7 +29,6 @@ body{
   transform:translate(-50%,-50%);
   text-align:center;
   z-index:20;
-  display:none;
 }
 #gift{
   width:300px;
@@ -63,6 +42,7 @@ body{
   pointer-events:auto;
   opacity:1;
 }
+
 @keyframes shake{
   0%{transform:rotate(0)}
   5%{transform:rotate(-5deg)}
@@ -74,7 +54,7 @@ body{
 
 .text{
   color:white;
-  font-size:22px;
+  font-size:28px;
   margin-top:15px;
 }
 
@@ -86,7 +66,11 @@ body{
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
+  background:radial-gradient(ellipse,
+    rgba(255,215,0,.75),
+    rgba(255,215,0,.35),
+    rgba(255,215,0,0)
+  );
   opacity:0;
   z-index:-1;
 }
@@ -130,21 +114,35 @@ body{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
 }
+
+/* 🎉 Başlangıç simgesi */
+#party{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:150px;
+  cursor:pointer;
+  z-index:50;
+}
+#partyText{
+  position:fixed;
+  top:65%;left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-size:32px;
+  font-weight:bold;
+  z-index:50;
+}
 </style>
 </head>
-<body>
 
-<!-- 🎉 TUŞ -->
-<div id="partyBtnContainer">
-  <div id="partyBtn">🎉</div>
-  <div id="partyText">Buraya bas</div>
-</div>
+<body>
 
 <div id="countdown">3</div>
 
 <img src="1766762547682.png" class="wreath" id="w1">
 <img src="1766762547682.png" class="wreath" id="w2">
-<img src="1766762547682.png" class="wreath" id="w3">
+<img src="1766762547682.png" class="w3">
 <img src="1766762547682.png" class="wreath" id="w4">
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
@@ -161,6 +159,10 @@ body{
 <audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
+<!-- 🎉 Başlangıç -->
+<div id="party">🎉</div>
+<div id="partyText">Buraya tıkla</div>
+
 <script>
 const flowerEmojis=["🌹","🌺","🌸","🪻"];
 const gift=document.getElementById("gift");
@@ -171,8 +173,9 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const partyBtnContainer=document.getElementById("partyBtnContainer");
 const countdown=document.getElementById("countdown");
+const party=document.getElementById("party");
+const partyText=document.getElementById("partyText");
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -188,13 +191,13 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 BASILDIĞINDA */
-partyBtnContainer.onclick=()=>{
-  partyBtnContainer.style.display="none";
+/* 🎉 TIK */
+party.onclick=()=>{
+  party.style.display="none";
+  partyText.style.display="none";
   countdown.style.display="flex";
   introMusic.play().catch(()=>{});
 
-  /* GERİ SAYIM */
   let c=3;
   const timer=setInterval(()=>{
     c--;
