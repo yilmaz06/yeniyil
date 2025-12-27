@@ -58,14 +58,17 @@ body{
   margin-top:15px;
 }
 
-/* PARLAMA */
+/* PARLAMA – HEDİYEYİ TAM SARAR */
 #giftGlow{
   position:absolute;
-  inset:-60px;
-  border-radius:50%;
-  background:radial-gradient(circle,
-    rgba(255,215,0,.7),
-    rgba(255,215,0,.2),
+  width:420px;
+  height:420px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse,
+    rgba(255,215,0,.75),
+    rgba(255,215,0,.35),
     rgba(255,215,0,0)
   );
   opacity:0;
@@ -104,10 +107,9 @@ body{
   position:fixed;
   pointer-events:none;
   user-select:none;
-  z-index:999; /* HER ŞEYİN ÜSTÜ */
+  z-index:999;
   animation:fall linear;
 }
-
 @keyframes fall{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
@@ -135,7 +137,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek.mp3" autoplay loop></audio>
+<audio id="introMusic" src="Pillibebek.mp3" loop muted></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -149,7 +151,12 @@ const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-/* KAR (SÜREKLİ - DÖNEREK) */
+/* SAYFA AÇILINCA MÜZİK HAZIR */
+window.addEventListener("load",()=>{
+  introMusic.play().catch(()=>{});
+});
+
+/* KAR */
 for(let i=0;i<180;i++){
   const s=document.createElement("div");
   s.className="falling";
@@ -173,22 +180,23 @@ const timer=setInterval(()=>{
   }else{
     clearInterval(timer);
     cd.style.display="none";
+    introMusic.muted=false; /* SES AÇILIR */
     gift.classList.add("active");
   }
 },1500);
 
-/* HEDİYE TIK */
+/* HEDİYE */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* PARLAMA: yavaş gel – hızlı git */
-  glow.style.transition="opacity .8s ease-in";
+  /* PARLAMA */
+  glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
-    glow.style.transition="opacity .3s ease-out";
+    glow.style.transition="opacity .25s ease-out";
     glow.style.opacity=0;
-  },600);
+  },700);
 
   setTimeout(()=>{
     gift.style.display="none";
@@ -196,7 +204,6 @@ gift.onclick=()=>{
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
-    /* TEK SEFERLİK 37 ÇİÇEK */
     for(let i=0;i<37;i++){
       const f=document.createElement("div");
       f.className="falling";
@@ -212,7 +219,7 @@ gift.onclick=()=>{
 
     bouquet.style.display="block";
     note.style.display="block";
-  },700);
+  },800);
 };
 </script>
 
