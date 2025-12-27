@@ -3,32 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Sürpriz 🎁</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   width:100vw;height:100vh;
   background:linear-gradient(135deg,#8b0000,#000);
   overflow:hidden;font-family:Arial,sans-serif;
-}
-
-/* 🎉 TUŞ */
-#partyBtn{
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-size:150px;
-  cursor:pointer;
-  z-index:100;
-}
-#partyText{
-  position:fixed;
-  top:calc(50% + 120px);
-  left:50%;
-  transform:translateX(-50%);
-  color:white;
-  font-size:30px;
-  font-weight:bold;
-  z-index:100;
 }
 
 /* GERİ SAYIM */
@@ -38,8 +19,7 @@ body{
   font-size:160px;font-weight:bold;
   color:gold;
   text-shadow:0 0 40px gold;
-  z-index:90;
-  display:none;
+  z-index:100;
 }
 
 /* ORTA */
@@ -135,21 +115,19 @@ body{
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
-/* KALPLER & YAZI */
+/* KALP & YAZI */
 .heartText{
   position:fixed;
-  font-size:25px;
-  color:rgba(255,0,0,0.9);
   font-weight:bold;
   pointer-events:none;
+  z-index:150;
+  text-align:center;
+  line-height:1.2;
 }
 </style>
 </head>
-<body>
 
-<!-- 🎉 TUŞ -->
-<div id="partyBtn">🎉</div>
-<div id="partyText">Buraya bas</div>
+<body>
 
 <div id="countdown">3</div>
 
@@ -169,7 +147,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
+<audio id="introMusic" src="Pillibebek1.mp3"></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -182,11 +160,9 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const partyBtn=document.getElementById("partyBtn");
-const partyText=document.getElementById("partyText");
 
-/* KAR */
-for(let i=0;i<150;i++){
+/* KAR (SÜREKLİ) */
+for(let i=0;i<180;i++){
   const s=document.createElement("div");
   s.className="falling";
   s.textContent="❄";
@@ -199,28 +175,86 @@ for(let i=0;i<150;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TUŞ BASILINCA */
-partyBtn.onclick=()=>{
-  partyBtn.style.display="none";
-  partyText.style.display="none";
-  document.getElementById("countdown").style.display="flex";
+/* GÖSTERİM: 🎉 */
+const startBtn = document.createElement("div");
+startBtn.style.position="fixed";
+startBtn.style.left="50%";
+startBtn.style.top="50%";
+startBtn.style.transform="translate(-50%,-50%)";
+startBtn.style.fontSize="150px";
+startBtn.style.cursor="pointer";
+startBtn.style.zIndex="200";
+startBtn.textContent="🎉";
+document.body.appendChild(startBtn);
+
+const startText=document.createElement("div");
+startText.textContent="Buraya bas";
+startText.style.position="fixed";
+startText.style.top="calc(50% + 120px)";
+startText.style.left="50%";
+startText.style.transform="translateX(-50%)";
+startText.style.color="white";
+startText.style.fontSize="24px";
+startText.style.zIndex="200";
+document.body.appendChild(startText);
+
+/* Geri sayım ve yazılar fonksiyonu */
+function showHeartText(line1,line2,size){
+  const giftRect = gift.getBoundingClientRect();
+
+  // Kalp dikkat için koyu renk ve yukarı hareket
+  const heart=document.createElement("div");
+  heart.className="heartText";
+  heart.style.fontSize=size;
+  heart.style.color="#222";
+  heart.style.left = (giftRect.left + giftRect.width*0.1 + Math.random()*giftRect.width*0.8) + "px";
+  heart.style.top = (giftRect.top - 60 + Math.random()*30) + "px";
+  heart.innerHTML="❤️";
+  document.body.appendChild(heart);
+
+  // Yukarı çıkma animasyonu
+  heart.animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(-50px)' }], { duration: 800, fill: 'forwards' });
+
+  // Yazı
+  const textDiv=document.createElement("div");
+  textDiv.className="heartText";
+  textDiv.style.fontSize=size;
+  textDiv.style.color="rgba(255,255,255,0)";
+  textDiv.style.left = heart.style.left;
+  textDiv.style.top = (parseInt(heart.style.top)+30) + "px";
+  textDiv.innerHTML=line1+"<br>"+line2;
+  document.body.appendChild(textDiv);
+
+  // Hayalet efekti
+  setTimeout(()=>{
+    textDiv.style.transition="opacity 0.5s";
+    textDiv.style.color="rgba(255,255,255,0.7)";
+  },800);
+  setTimeout(()=>{
+    textDiv.style.transition="opacity 0.5s";
+    textDiv.style.color="rgba(255,255,255,0)";
+    heart.remove();
+    textDiv.remove();
+  },3300);
+}
+
+/* Start butonuna basılınca */
+startBtn.onclick = ()=>{
+  startBtn.remove();
+  startText.remove();
   introMusic.play().catch(()=>{});
 
-  /* GERİ SAYIM */
   let c=3;
   const cd=document.getElementById("countdown");
+  cd.style.display="flex";
+  cd.textContent=c;
+
   const timer=setInterval(()=>{
     c--;
+    if(c==2) showHeartText("Bir an düşün","Kalbinden geçen ile","20px");
+    if(c==1) showHeartText("Gözlerini aç ve","Yola devam et","20px");
     if(c>0){
       cd.textContent=c;
-      if(c==2){
-        // Sol üst kalp ve yazı
-        showHeartText("Bir an düşün","Kalbinden geçen ile","20px","20vw","20vh");
-      }
-      if(c==1){
-        // Sağ alt kalp ve yazı
-        showHeartText("Gözlerini aç ve","Yola devam et","20px","70vw","70vh");
-      }
     }else{
       clearInterval(timer);
       cd.style.display="none";
@@ -229,18 +263,18 @@ partyBtn.onclick=()=>{
   },2500);
 };
 
-/* HEDİYE */
+/* HEDİYE TIK */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
   /* PARLAMA */
-  glow.style.transition="opacity .5s ease-in";
+  glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
     glow.style.transition="opacity .25s ease-out";
     glow.style.opacity=0;
-  },600);
+  },700);
 
   setTimeout(()=>{
     gift.style.display="none";
@@ -248,7 +282,6 @@ gift.onclick=()=>{
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
-    // 50 çiçek
     for(let i=0;i<50;i++){
       const f=document.createElement("div");
       f.className="falling";
@@ -264,20 +297,8 @@ gift.onclick=()=>{
 
     bouquet.style.display="block";
     note.style.display="block";
-  },700);
+  },800);
 };
-
-/* KALP VE YAZI */
-function showHeartText(line1,line2,size,left,top){
-  const heart=document.createElement("div");
-  heart.className="heartText";
-  heart.style.fontSize=size;
-  heart.style.left=left;
-  heart.style.top=top;
-  heart.innerHTML=line1+"<br>"+line2;
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),2500);
-}
 </script>
 
 </body>
