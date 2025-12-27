@@ -4,29 +4,12 @@
 <meta charset="UTF-8">
 <title>Sürpriz 🎁</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{
   width:100vw;height:100vh;
   background:linear-gradient(135deg,#8b0000,#000);
   overflow:hidden;font-family:Arial,sans-serif;
-}
-
-/* 🎉 TUŞU */
-#partyBtn{
-  position:fixed;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-size:12vw;
-  cursor:pointer;
-  z-index:100;
-  user-select:none;
-}
-#partyText{
-  position:fixed;top:calc(50% + 10vw);left:50%;
-  transform:translateX(-50%);
-  color:white;font-size:2vw;
-  z-index:100;
-  text-align:center;
-  user-select:none;
+  position:relative;
 }
 
 /* GERİ SAYIM */
@@ -36,11 +19,11 @@ body{
   font-size:160px;font-weight:bold;
   color:gold;
   text-shadow:0 0 40px gold;
-  z-index:90;
+  z-index:100;
   display:none;
 }
 
-/* ORTA */
+/* ORTA HEDİYE */
 .center{
   position:fixed;
   top:50%;left:50%;
@@ -60,6 +43,7 @@ body{
   pointer-events:auto;
   opacity:1;
 }
+
 @keyframes shake{
   0%{transform:rotate(0)}
   5%{transform:rotate(-5deg)}
@@ -68,19 +52,20 @@ body{
   20%{transform:rotate(5deg)}
   25%,100%{transform:rotate(0)}
 }
+
 .text{
   color:white;
   font-size:22px;
   margin-top:15px;
 }
 
-/* PARLAMA */
+/* PARLAMA HEDİYE */
 #giftGlow{
   position:absolute;
   width:420px;height:420px;
   left:50%;top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
+  background:radial-gradient(circle,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
   opacity:0;
   z-index:-1;
 }
@@ -112,7 +97,44 @@ body{
   z-index:30;
 }
 
-/* KAR & ÇİÇEK & KALP & YAZI */
+/* KALPLER VE YAZI */
+.heart{
+  position:absolute;
+  font-size:40px;
+  opacity:0.7;
+  z-index:50;
+  user-select:none;
+}
+.ghostText{
+  position:absolute;
+  font-size:20px;
+  color:gold;
+  opacity:0;
+  z-index:50;
+  font-weight:bold;
+  text-shadow:0 0 10px gold;
+}
+
+/* 🎉 TUŞ */
+#startBtn{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:100px;
+  cursor:pointer;
+  z-index:90;
+}
+#startText{
+  position:fixed;
+  top:60%;left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-size:25px;
+  font-weight:bold;
+  z-index:90;
+}
+
+/* KAR & ÇİÇEK */
 .falling{
   position:fixed;
   pointer-events:none;
@@ -124,21 +146,9 @@ body{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
 }
-.heart{
-  position:fixed;font-size:30px;color:red;z-index:50;
-  pointer-events:none;
-}
-.textFloating{
-  position:fixed;color:white;font-size:18px;opacity:0;z-index:51;
-  pointer-events:none;
-}
 </style>
 </head>
 <body>
-
-<!-- 🎉 TUŞU -->
-<div id="partyBtn">🎉</div>
-<div id="partyText">Buraya bas</div>
 
 <div id="countdown">3</div>
 
@@ -158,6 +168,9 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
+<div id="startBtn">🎉</div>
+<div id="startText">Buraya bas</div>
+
 <audio id="introMusic" src="Pillibebek1.mp3"></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
@@ -169,15 +182,14 @@ const text=document.querySelector(".text");
 const wreaths=document.querySelectorAll(".wreath");
 const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
+const startBtn=document.getElementById("startBtn");
+const startText=document.getElementById("startText");
+const countdown=document.getElementById("countdown");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-const partyBtn=document.getElementById("partyBtn");
-const partyText=document.getElementById("partyText");
-const countdown=document.getElementById("countdown");
-
-/* KAR */
-for(let i=0;i<180;i++){
+/* KAR SÜREKLİ */
+for(let i=0;i<150;i++){
   const s=document.createElement("div");
   s.className="falling";
   s.textContent="❄";
@@ -190,12 +202,11 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TIKLAMA */
-partyBtn.onclick=()=>{
-  partyBtn.style.display="none";
-  partyText.style.display="none";
+/* 🎉 BASILDIĞINDA */
+startBtn.onclick=()=>{
+  startBtn.style.display="none";
+  startText.style.display="none";
   countdown.style.display="flex";
-
   introMusic.play().catch(()=>{});
 
   /* GERİ SAYIM */
@@ -204,24 +215,14 @@ partyBtn.onclick=()=>{
     c--;
     if(c>0){
       countdown.textContent=c;
+      if(c===2){
+        // 2’de kalpler ve yazılar
+        spawnHeartsAndText();
+      }
     }else{
       clearInterval(timer);
       countdown.style.display="none";
       gift.classList.add("active");
-
-      /* 50 ÇİÇEK */
-      for(let i=0;i<50;i++){
-        const f=document.createElement("div");
-        f.className="falling";
-        f.textContent=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
-        f.style.left=Math.random()*100+"vw";
-        f.style.fontSize=(Math.random()*40+40)+"px";
-        const dur=Math.random()*4+4;
-        f.style.animationDuration=dur+"s";
-        f.style.top="-200px";
-        document.body.appendChild(f);
-        setTimeout(()=>f.remove(),dur*1000);
-      }
     }
   },2500);
 };
@@ -231,23 +232,73 @@ gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* PARLAMA */
+  // PARLAMA
   glow.style.transition="opacity .5s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
-    glow.style.transition="opacity .25s ease-out";
+    glow.style.transition="opacity .2s ease-out";
     glow.style.opacity=0;
-  },600);
+  },700);
 
   setTimeout(()=>{
     gift.style.display="none";
     text.style.display="none";
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
+
+    for(let i=0;i<50;i++){
+      const f=document.createElement("div");
+      f.className="falling";
+      f.textContent=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+      f.style.left=Math.random()*100+"vw";
+      f.style.fontSize=(Math.random()*40+40)+"px";
+      const dur=Math.random()*4+4;
+      f.style.animationDuration=dur+"s";
+      f.style.top="-200px";
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),dur*1000);
+    }
+
     bouquet.style.display="block";
     note.style.display="block";
-  },700);
+  },800);
 };
+
+/* KALPLER VE YAZILAR */
+function spawnHeartsAndText(){
+  const positions=[
+    {x:gift.offsetLeft-100, y:gift.offsetTop-100},
+    {x:gift.offsetLeft+100, y:gift.offsetTop-100},
+    {x:gift.offsetLeft-100, y:gift.offsetTop+100},
+    {x:gift.offsetLeft+100, y:gift.offsetTop+100},
+  ];
+  const texts=[
+    ["Bir an düşün","Kalbinden geçen ile"],
+    ["Gözlerini aç ve","Yola devam et"],
+    ["Her şey mümkün","Ve seninle başlar"]
+  ];
+
+  positions.forEach((pos,i)=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.style.left=pos.x+"px";
+    h.style.top=pos.y+"px";
+    h.textContent="❤️";
+    document.body.appendChild(h);
+
+    const t=document.createElement("div");
+    t.className="ghostText";
+    t.style.left=(pos.x+20)+"px";
+    t.style.top=(pos.y+30)+"px";
+    t.innerHTML=texts[i][0]+"<br>"+texts[i][1];
+    document.body.appendChild(t);
+
+    t.style.transition="opacity 0.5s ease-in";
+    t.style.opacity=1;
+    setTimeout(()=>{t.style.opacity=0;},2500);
+  });
+}
 </script>
+
 </body>
 </html>
