@@ -37,7 +37,6 @@ body{
   pointer-events:none;
   opacity:.4;
   position:relative;
-  z-index:2;
 }
 #gift.active{
   pointer-events:auto;
@@ -53,29 +52,21 @@ body{
   25%,100%{transform:rotate(0)}
 }
 
-.text{
-  color:white;
-  font-size:22px;
-  margin-top:15px;
-}
+.text{color:white;font-size:22px;margin-top:15px}
 
-/* 🔆 PARLAMA – TAM YUVARLAK, ARKADA */
+/* PARLAMA */
 #giftGlow{
   position:absolute;
-  width:460px;
-  height:460px;
-  left:50%;
-  top:50%;
+  width:420px;height:420px;
+  left:50%;top:50%;
   transform:translate(-50%,-50%);
-  border-radius:50%;
   background:radial-gradient(circle,
-    rgba(255,215,0,.6) 0%,
-    rgba(255,215,0,.35) 35%,
-    rgba(255,215,0,.15) 55%,
-    rgba(255,215,0,0) 70%
+    rgba(255,215,0,.6),
+    rgba(255,215,0,.25),
+    rgba(255,215,0,0)
   );
   opacity:0;
-  z-index:1;
+  z-index:-1;
 }
 
 /* ÇELENK */
@@ -89,23 +80,17 @@ body{
 
 /* BUKET */
 #bouquet{
-  position:fixed;
-  top:38%;left:50%;
+  position:fixed;top:38%;left:50%;
   transform:translate(-50%,-50%);
-  width:1000px;
-  display:none;
-  z-index:30;
+  width:1000px;display:none;z-index:30;
 }
 #note{
-  position:fixed;
-  top:52%;left:50%;
+  position:fixed;top:52%;left:50%;
   transform:translateX(-50%);
-  width:600px;
-  display:none;
-  z-index:30;
+  width:600px;display:none;z-index:30;
 }
 
-/* KAR & ÇİÇEK */
+/* KAR / ÇİÇEK */
 .falling{
   position:fixed;
   pointer-events:none;
@@ -116,6 +101,35 @@ body{
 @keyframes fall{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* KALP */
+.heart{
+  position:fixed;
+  font-size:42px;
+  animation:heartFloat 2s ease-out forwards;
+  z-index:200;
+}
+@keyframes heartFloat{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(-120px)}
+}
+
+/* HAYALET YAZI */
+.ghost{
+  position:fixed;
+  color:white;
+  font-size:28px;
+  text-align:center;
+  opacity:0;
+  animation:ghostFade 1.5s ease-in-out forwards;
+  z-index:200;
+}
+@keyframes ghostFade{
+  0%{opacity:0}
+  20%{opacity:.7}
+  80%{opacity:.7}
+  100%{opacity:0}
 }
 </style>
 </head>
@@ -140,7 +154,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek.mp3" loop muted></audio>
+<audio id="introMusic" src="Pillibebek.mp3" loop></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -153,11 +167,6 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-
-/* SAYFA AÇILINCA MÜZİK */
-window.addEventListener("load",()=>{
-  introMusic.play().catch(()=>{});
-});
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -173,18 +182,44 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
+/* YARDIMCI */
+function showHeartAndText(x,y,lines){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.style.left=x;
+  h.style.top=y;
+  h.textContent="❤️";
+  document.body.appendChild(h);
+
+  const t=document.createElement("div");
+  t.className="ghost";
+  t.style.left=x;
+  t.style.top=`calc(${y} + 40px)`;
+  t.innerHTML=lines.join("<br>");
+  document.body.appendChild(t);
+
+  setTimeout(()=>{h.remove();t.remove()},2000);
+}
+
 /* GERİ SAYIM */
 let c=3;
 const cd=document.getElementById("countdown");
 const timer=setInterval(()=>{
   c--;
+  if(c===2){
+    introMusic.play();
+    showHeartAndText("8%","12%",["Bir an düşün","Kalbinden geçen ile"]);
+  }
+  if(c===1){
+    showHeartAndText("75%","70%",["Gözlerini aç ve","Yola devam et"]);
+  }
   if(c>0){
     cd.textContent=c;
   }else{
     clearInterval(timer);
     cd.style.display="none";
-    introMusic.muted=false;
-    gift.classList.add("active");
+    showHeartAndText("50%","38%",["Her şey mümkün","Ve seninle başlar"]);
+    setTimeout(()=>gift.classList.add("active"),1000);
   }
 },1500);
 
@@ -193,13 +228,12 @@ gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* 🔆 PARLAMA – YUVARLAK, ARKADA */
   glow.style.transition="opacity .6s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
-    glow.style.transition="opacity .2s ease-out";
+    glow.style.transition="opacity .25s ease-out";
     glow.style.opacity=0;
-  },450);
+  },500);
 
   setTimeout(()=>{
     gift.style.display="none";
@@ -207,7 +241,6 @@ gift.onclick=()=>{
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
-    /* 🌸 40 ÇİÇEK */
     for(let i=0;i<40;i++){
       const f=document.createElement("div");
       f.className="falling";
