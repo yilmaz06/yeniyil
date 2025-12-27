@@ -19,6 +19,7 @@ body{
   color:gold;
   text-shadow:0 0 40px gold;
   z-index:100;
+  display:none;
 }
 
 /* ORTA */
@@ -53,7 +54,7 @@ body{
 
 .text{
   color:white;
-  font-size:22px;
+  font-size:28px;
   margin-top:15px;
 }
 
@@ -114,35 +115,37 @@ body{
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
-/* 🎉 TUŞ */
-#partyBtn{
+/* 🎉 BUTON */
+#partyButton{
   position:fixed;
-  top:50%;
-  left:50%;
+  top:50%; left:50%;
   transform:translate(-50%,-50%);
-  font-size:150px;
+  font-size:120px;
   cursor:pointer;
-  user-select:none;
   z-index:50;
+  user-select:none;
 }
 #partyText{
   position:fixed;
-  top:calc(50% + 120px);
-  left:50%;
+  top:60%; left:50%;
   transform:translateX(-50%);
   color:white;
-  font-size:24px;
+  font-size:32px;
   z-index:50;
 }
 </style>
 </head>
 <body>
 
+<!-- 🎉 BUTON -->
+<div id="partyButton">🎉</div>
+<div id="partyText">Buraya tıkla</div>
+
 <div id="countdown">3</div>
 
 <img src="1766762547682.png" class="wreath" id="w1">
 <img src="1766762547682.png" class="wreath" id="w2">
-<img src="1766762547682.png" class="w3">
+<img src="1766762547682.png" class="wreath" id="w3">
 <img src="1766762547682.png" class="wreath" id="w4">
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
@@ -156,11 +159,7 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<!-- 🎉 Tuş ve alt yazısı -->
-<div id="partyBtn">🎉</div>
-<div id="partyText">Buraya bas</div>
-
-<audio id="introMusic" src="Pillibebek.mp3" loop muted></audio>
+<audio id="introMusic" src="Pillibebek1.mp3"></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -173,11 +172,12 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const partyBtn=document.getElementById("partyBtn");
+
+const partyButton=document.getElementById("partyButton");
 const partyText=document.getElementById("partyText");
 
-/* SAYFA AÇILINCA KAR */
-for(let i=0;i<300;i++){
+/* KAR */
+for(let i=0;i<180;i++){
   const s=document.createElement("div");
   s.className="falling";
   s.textContent="❄";
@@ -190,18 +190,18 @@ for(let i=0;i<300;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TUŞA TIK */
-partyBtn.onclick=()=>{
-  partyBtn.style.display="none";
+/* 🎉 TIKLAMA */
+partyButton.onclick=()=>{
+  partyButton.style.display="none";
   partyText.style.display="none";
-  introMusic.muted=false;
+
+  /* Müzik başlasın */
   introMusic.play();
 
-  /* GERİ SAYIM */
+  /* Geri sayımı göster */
+  document.getElementById("countdown").style.display="flex";
   let c=3;
   const cd=document.getElementById("countdown");
-  cd.style.display="flex";
-  cd.textContent=c;
   const timer=setInterval(()=>{
     c--;
     if(c>0){
@@ -211,10 +211,10 @@ partyBtn.onclick=()=>{
       cd.style.display="none";
       gift.classList.add("active");
     }
-  },1500);
+  },2500); /* 2.5 saniye */
 };
 
-/* HEDİYE TIK */
+/* HEDİYE */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
@@ -233,7 +233,7 @@ gift.onclick=()=>{
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
-    for(let i=0;i<100;i++){
+    for(let i=0;i<50;i++){
       const f=document.createElement("div");
       f.className="falling";
       f.textContent=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
