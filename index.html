@@ -249,7 +249,62 @@ gift.onclick=()=>{
     bouquet.style.display="block";
     note.style.display="block";
   },800);
-};
+};// --- KALP VE HAYALET YAZI ---
+function createHeartAndText(textContent, posX, posY) {
+  // Kalp
+  const heart = document.createElement('div');
+  heart.textContent = '❤';
+  heart.style.position = 'absolute';
+  heart.style.left = posX + 'px';
+  heart.style.top = posY + 'px';
+  heart.style.fontSize = '40px';
+  heart.style.color = 'rgba(255,255,255,0.8)';
+  heart.style.zIndex = 150;
+  heart.style.transition = 'all 1.5s ease-out';
+  document.body.appendChild(heart);
+
+  // Yukarı çıkma
+  setTimeout(() => {
+    heart.style.top = (posY - 100) + 'px';
+    heart.style.opacity = 0;
+  }, 50);
+
+  setTimeout(() => heart.remove(), 1600);
+
+  // Yazı
+  const ghostText = document.createElement('div');
+  ghostText.className = 'ghost-text';
+  ghostText.textContent = textContent;
+  ghostText.style.left = posX + 'px';
+  ghostText.style.top = (posY + 50) + 'px';
+  ghostText.style.opacity = 0;
+  ghostText.style.zIndex = 150;
+  document.body.appendChild(ghostText);
+
+  // Hayalet efekti
+  setTimeout(() => {
+    ghostText.style.transition = 'opacity 0.5s ease-in-out';
+    ghostText.style.opacity = 0.8;
+  }, 200);
+
+  setTimeout(() => {
+    ghostText.style.opacity = 0;
+  }, 3200);
+
+  setTimeout(() => ghostText.remove(), 3500);
+}
+
+// Geri sayım 2. saniyesinde kalp ve yazı
+setTimeout(() => {
+  // Sol üst hediyeye yakın
+  createHeartAndText('Bir an düşün',  gift.offsetLeft - 60, gift.offsetTop - 60);
+
+  // Sağ üst hediyeye yakın
+  createHeartAndText('Gözlerini aç ve', gift.offsetLeft + 260, gift.offsetTop - 60);
+
+  // Hediyenin üstü
+  createHeartAndText('Her şey mümkün', gift.offsetLeft + 80, gift.offsetTop - 120);
+}, 2500); // 2. saniye ~ 2500ms
 </script>
 
 </body>
