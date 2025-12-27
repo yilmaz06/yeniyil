@@ -3,35 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Sürpriz 🎁</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{
-  width:100vw; height:100vh;
-  background:linear-gradient(135deg,#8b0000,#000);
-  overflow:hidden; font-family:Arial,sans-serif;
-}
 
-/* 🎉 Başlangıç simgesi */
-#partyIcon{
-  position:fixed; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  font-size:80px; cursor:pointer;
-  animation:shakeIcon 2s infinite;
-  z-index:100;
-}
-#partyText{
-  position:fixed; top:calc(50% + 70px); left:50%;
-  transform:translateX(-50%);
-  color:white; font-size:24px;
-  text-align:center; z-index:100;
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  width:100vw;height:100vh;
+  background:linear-gradient(135deg,#8b0000,#000);
+  overflow:hidden;font-family:Arial,sans-serif;
 }
 
 /* GERİ SAYIM */
 #countdown{
-  position:fixed; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  font-size:160px; font-weight:bold;
-  color:gold; text-shadow:0 0 40px gold;
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:160px;font-weight:bold;
+  color:gold;
+  text-shadow:0 0 40px gold;
   z-index:100;
   display:none;
 }
@@ -39,7 +26,7 @@ body{
 /* ORTA */
 .center{
   position:fixed;
-  top:50%; left:50%;
+  top:50%;left:50%;
   transform:translate(-50%,-50%);
   text-align:center;
   z-index:20;
@@ -52,7 +39,10 @@ body{
   opacity:.4;
   position:relative;
 }
-#gift.active{pointer-events:auto;opacity:1;}
+#gift.active{
+  pointer-events:auto;
+  opacity:1;
+}
 @keyframes shake{
   0%{transform:rotate(0)}
   5%{transform:rotate(-5deg)}
@@ -68,14 +58,13 @@ body{
   margin-top:15px;
 }
 
-/* PARLAMA – HEDİYEYİ TAM SARAR */
+/* PARLAMA */
 #giftGlow{
   position:absolute;
-  width:420px;
-  height:420px;
-  left:50%; top:50%;
+  width:420px;height:420px;
+  left:50%;top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse, rgba(255,215,0,.75), rgba(255,215,0,.35), rgba(255,215,0,0));
+  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
   opacity:0;
   z-index:-1;
 }
@@ -90,32 +79,74 @@ body{
 #w6{bottom:90px;left:calc(50% + 150px);width:330px}
 
 /* BUKET */
-#bouquet{position:fixed;top:38%;left:50%;transform:translate(-50%,-50%);width:1000px;display:none;z-index:30;}
-#note{position:fixed;top:52%;left:50%;transform:translateX(-50%);width:600px;display:none;z-index:30;}
+#bouquet{
+  position:fixed;
+  top:38%;left:50%;
+  transform:translate(-50%,-50%);
+  width:1000px;
+  display:none;
+  z-index:30;
+}
+#note{
+  position:fixed;
+  top:52%;left:50%;
+  transform:translateX(-50%);
+  width:600px;
+  display:none;
+  z-index:30;
+}
 
 /* KAR & ÇİÇEK */
-.falling{position:fixed;pointer-events:none;user-select:none;z-index:999;animation:fall linear;}
-@keyframes fall{from{transform:translateY(-200px) rotate(0deg)} to{transform:translateY(110vh) rotate(360deg)}}
-
-/* KALPLER */
-.heart{
+.falling{
   position:fixed;
-  font-size:36px;
-  color:red;
-  opacity:0.8;
   pointer-events:none;
+  user-select:none;
+  z-index:999;
+  animation:fall linear;
+}
+@keyframes fall{
+  from{transform:translateY(-200px) rotate(0deg)}
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* 🎉 BUTON */
+#partyBtn{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:120px;
+  cursor:pointer;
+  z-index:100;
+  animation:shake 2s infinite;
+}
+#partyText{
+  position:fixed;
+  top:calc(50% + 100px);
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-size:28px;
+  text-shadow:0 0 10px gold;
   z-index:100;
 }
-@keyframes shakeIcon{0%,100%{transform:translate(-50%,-50%) rotate(-5deg)}50%{transform:translate(-50%,-50%) rotate(5deg)}}
+
+/* HAYALET YAZILAR */
+.hayalet{
+  position:fixed;
+  color:white;
+  font-size:28px;
+  opacity:0.7;
+  font-weight:bold;
+  pointer-events:none;
+}
 </style>
 </head>
 <body>
 
-<div id="partyIcon">🎉</div>
-<div id="partyText">Buraya bas!</div>
-
+<!-- GERİ SAYIM -->
 <div id="countdown">3</div>
 
+<!-- ÇELENKLER -->
 <img src="1766762547682.png" class="wreath" id="w1">
 <img src="1766762547682.png" class="wreath" id="w2">
 <img src="1766762547682.png" class="wreath" id="w3">
@@ -123,16 +154,23 @@ body{
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
 
+<!-- ORTA -->
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
   <div class="text">Hediyeniz burada 🎁</div>
 </div>
 
+<!-- Buket ve Not -->
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek.mp3" loop></audio>
+<!-- 🎉 BUTON -->
+<div id="partyBtn">🎉</div>
+<div id="partyText">Buraya bas!</div>
+
+<!-- MÜZİKLER -->
+<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -143,11 +181,11 @@ const text=document.querySelector(".text");
 const wreaths=document.querySelectorAll(".wreath");
 const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
+const countdown=document.getElementById("countdown");
+const partyBtn=document.getElementById("partyBtn");
+const partyText=document.getElementById("partyText");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const partyIcon=document.getElementById("partyIcon");
-const partyText=document.getElementById("partyText");
-const countdown=document.getElementById("countdown");
 
 /* KAR */
 for(let i=0;i<180;i++){
@@ -164,68 +202,25 @@ for(let i=0;i<180;i++){
 }
 
 /* 🎉 TIK */
-partyIcon.onclick=()=>{
-  partyIcon.style.display="none";
+partyBtn.onclick=()=>{
+  partyBtn.style.display="none";
   partyText.style.display="none";
   countdown.style.display="flex";
   introMusic.play().catch(()=>{});
-  startCountdown();
-};
 
-/* GERİ SAYIM */
-function startCountdown(){
   let c=3;
   const timer=setInterval(()=>{
     c--;
-    countdown.textContent=c>0?c:"";
-    if(c===2){
-      showHeart("solTop","Bir an düşün","Kalbinden geçen ile");
-    }
-    if(c===1){
-      showHeart("sagAlt","Gözlerini aç ve","Yola devam et");
-    }
-    if(c<=0){
+    if(c>0){
+      countdown.textContent=c;
+      // Buraya yazılar ve kalpler eklenebilir
+    }else{
       clearInterval(timer);
       countdown.style.display="none";
       gift.classList.add("active");
     }
   },2500);
-}
-
-/* KALPLER */
-function showHeart(pos, line1, line2){
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.textContent="❤️";
-  let top,left;
-  switch(pos){
-    case "solTop": top="10%"; left="10%"; break;
-    case "sagAlt": top="70%"; left="80%"; break;
-    case "solAlt": top="70%"; left="10%"; break;
-    case "sagTop": top="10%"; left="80%"; break;
-    default: top="50%"; left="50%";
-  }
-  heart.style.top=top; heart.style.left=left;
-  document.body.appendChild(heart);
-
-  // Alt yazı
-  const line=document.createElement("div");
-  line.style.position="fixed";
-  line.style.top="calc("+top+" + 40px)";
-  line.style.left=left;
-  line.style.transform="translateX(-50%)";
-  line.style.color="white";
-  line.style.fontSize="20px";
-  line.style.opacity=0.7;
-  line.style.textAlign="center";
-  line.innerHTML=line1+"<br>"+line2;
-  document.body.appendChild(line);
-
-  setTimeout(()=>{
-    heart.remove();
-    line.remove();
-  },2500);
-}
+};
 
 /* HEDİYE */
 gift.onclick=()=>{
@@ -236,9 +231,9 @@ gift.onclick=()=>{
   glow.style.transition="opacity .6s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
-    glow.style.transition="opacity .25s ease-out";
+    glow.style.transition="opacity .3s ease-out";
     glow.style.opacity=0;
-  },700);
+  },600);
 
   setTimeout(()=>{
     gift.style.display="none";
@@ -261,9 +256,8 @@ gift.onclick=()=>{
 
     bouquet.style.display="block";
     note.style.display="block";
-  },800);
+  },700);
 };
 </script>
-
 </body>
 </html>
