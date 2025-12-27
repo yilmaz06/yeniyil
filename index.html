@@ -19,7 +19,6 @@ body{
   color:gold;
   text-shadow:0 0 40px gold;
   z-index:100;
-  display:none;
 }
 
 /* ORTA */
@@ -54,7 +53,7 @@ body{
 
 .text{
   color:white;
-  font-size:28px;
+  font-size:22px;
   margin-top:15px;
 }
 
@@ -114,32 +113,10 @@ body{
   from{transform:translateY(-200px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
 }
-
-/* 🎉 BUTON */
-#partyButton{
-  position:fixed;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  font-size:120px;
-  cursor:pointer;
-  z-index:50;
-  user-select:none;
-}
-#partyText{
-  position:fixed;
-  top:60%; left:50%;
-  transform:translateX(-50%);
-  color:white;
-  font-size:32px;
-  z-index:50;
-}
 </style>
 </head>
-<body>
 
-<!-- 🎉 BUTON -->
-<div id="partyButton">🎉</div>
-<div id="partyText">Buraya tıkla</div>
+<body>
 
 <div id="countdown">3</div>
 
@@ -153,13 +130,13 @@ body{
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
-  <div class="text">Hediyeniz burada 🎁</div>
+  <div class="text" style="color:white;font-size:22px;">Hediyeniz burada 🎁</div>
 </div>
 
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3"></audio>
+<audio id="introMusic" src="Pillibebek1.mp3" loop muted></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
@@ -172,9 +149,6 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-
-const partyButton=document.getElementById("partyButton");
-const partyText=document.getElementById("partyText");
 
 /* KAR */
 for(let i=0;i<300;i++){
@@ -190,31 +164,26 @@ for(let i=0;i<300;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TIKLAMA */
-partyButton.onclick=()=>{
-  partyButton.style.display="none";
-  partyText.style.display="none";
-
-  /* Müzik başlasın */
-  introMusic.play();
-
-  /* Geri sayımı göster */
-  document.getElementById("countdown").style.display="flex";
-  let c=3;
-  const cd=document.getElementById("countdown");
-  const timer=setInterval(()=>{
-    c--;
-    if(c>0){
-      cd.textContent=c;
-    }else{
-      clearInterval(timer);
-      cd.style.display="none";
-      gift.classList.add("active");
+/* GERİ SAYIM */
+let countdownNumber=3;
+const cd=document.getElementById("countdown");
+const timer=setInterval(()=>{
+  countdownNumber--;
+  if(countdownNumber>0){
+    cd.textContent=countdownNumber;
+    if(countdownNumber===2){
+      showHeartsAndTexts(); // Geri sayım 2'de kalp ve yazı
+      introMusic.muted=false;
+      introMusic.play().catch(()=>{});
     }
-  },2500); /* 2.5 saniye */
-};
+  }else{
+    clearInterval(timer);
+    cd.style.display="none";
+    gift.classList.add("active");
+  }
+},1500);
 
-/* HEDİYE */
+/* HEDİYE TIK */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
@@ -250,70 +219,55 @@ gift.onclick=()=>{
     note.style.display="block";
   },800);
 };
-  // Geri sayım 2'de yazılar ve kalp
-let countdownNumber = 3; // Geri sayım başlangıcı
 
-const gift = document.getElementById("gift");
-
-function showHeartAndText() {
+/* KALP VE YAZILAR */
+function showHeartsAndTexts() {
   const positions = [
-    {x: gift.offsetLeft - 50, y: gift.offsetTop + 50}, // Sol
-    {x: gift.offsetLeft + gift.offsetWidth + 10, y: gift.offsetTop + 50}, // Sağ
-    {x: gift.offsetLeft + gift.offsetWidth/2 - 30, y: gift.offsetTop - 50} // Üst
+    {x: gift.offsetLeft - 70, y: gift.offsetTop + 20}, // Sol
+    {x: gift.offsetLeft + gift.offsetWidth + 20, y: gift.offsetTop + 20}, // Sağ
+    {x: gift.offsetLeft + gift.offsetWidth/2 - 40, y: gift.offsetTop - 60} // Üst
   ];
-  const texts = ["Sol Yazı", "Sağ Yazı", "Üst Yazı"];
+  const texts = ["Bir an düşün", "Gözlerini aç ve", "Her şey mümkün"];
 
-  positions.forEach((pos, i) => {
+  positions.forEach((pos,i)=>{
     // Kalp
-    const heart = document.createElement("div");
-    heart.textContent = "❤️";
-    heart.style.position = "fixed";
-    heart.style.left = pos.x + "px";
-    heart.style.top = pos.y + "px";
-    heart.style.fontSize = "24px";
-    heart.style.color = "red";
+    const heart=document.createElement("div");
+    heart.textContent="❤️";
+    heart.style.position="fixed";
+    heart.style.left=pos.x+"px";
+    heart.style.top=pos.y+"px";
+    heart.style.fontSize="24px";
+    heart.style.color="red";
     document.body.appendChild(heart);
 
-    // Yukarı süzülme animasyonu
+    // Kalp yukarı süzülme
     heart.animate([
-      {transform: "translateY(0px)", opacity: 1},
-      {transform: "translateY(-50px)", opacity: 0}
-    ], {duration: 1500, easing: "ease-out"});
-
-    setTimeout(() => heart.remove(), 1500);
+      {transform:"translateY(0px)",opacity:1},
+      {transform:"translateY(-50px)",opacity:0}
+    ],{duration:1500,easing:"ease-out"});
+    setTimeout(()=>heart.remove(),1500);
 
     // Yazı
-    const text = document.createElement("div");
-    text.textContent = texts[i];
-    text.style.position = "fixed";
-    text.style.left = pos.x + "px";
-    text.style.top = (pos.y + 30) + "px";
-    text.style.color = "white";
-    text.style.fontSize = "18px";
-    text.style.opacity = 0;
-    document.body.appendChild(text);
+    const textDiv=document.createElement("div");
+    textDiv.textContent=texts[i];
+    textDiv.style.position="fixed";
+    textDiv.style.left=pos.x+"px";
+    textDiv.style.top=(pos.y+30)+"px";
+    textDiv.style.color="white";
+    textDiv.style.fontSize="18px";
+    textDiv.style.opacity=0;
+    document.body.appendChild(textDiv);
 
     // Hayalet efekti
-    text.animate([
-      {opacity: 0},
-      {opacity: 1},
-      {opacity: 1},
-      {opacity: 0}
-    ], {duration: 2500, easing: "ease-in-out"});
-
-    setTimeout(() => text.remove(), 2500);
+    textDiv.animate([
+      {opacity:0},
+      {opacity:1},
+      {opacity:1},
+      {opacity:0}
+    ],{duration:2500,easing:"ease-in-out"});
+    setTimeout(()=>textDiv.remove(),2500);
   });
 }
-// Örnek geri sayım kontrolü
-const countdownInterval = setInterval(() => {
-  countdownNumber--;
-  if(countdownNumber === 2){
-    showHeartAndText();
-  }
-  if(countdownNumber <= 0){
-    clearInterval(countdownInterval);
-  }
-}, 1500);
 </script>
 
 </body>
