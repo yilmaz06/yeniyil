@@ -195,10 +195,8 @@ partyButton.onclick=()=>{
   partyButton.style.display="none";
   partyText.style.display="none";
 
-  /* Müzik başlasın */
   introMusic.play();
 
-  /* Geri sayımı göster */
   document.getElementById("countdown").style.display="flex";
   let c=3;
   const cd=document.getElementById("countdown");
@@ -211,7 +209,7 @@ partyButton.onclick=()=>{
       cd.style.display="none";
       gift.classList.add("active");
     }
-  },2000); /* 2 saniye her sayı */
+  },2000); /* Her sayı 2 saniye */
 };
 
 /* HEDİYE */
@@ -219,7 +217,6 @@ gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* PARLAMA */
   glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
@@ -251,11 +248,10 @@ gift.onclick=()=>{
   },800);
 };
 
-// 🎉 simgesine basıldıktan sonra kalp animasyonu (sol ve sağdan yukarı)
-function startHearts() {
-  const body = document.body;
-  const sides = ["left","right"];
-
+/* KALPLER (sol ve sağdan yukarı) */
+function startHearts(){
+  const body=document.body;
+  const sides=["left","right"];
   setInterval(()=>{
     for(let i=0;i<8;i++){
       const heart=document.createElement("div");
@@ -267,16 +263,16 @@ function startHearts() {
       heart.style.opacity=1;
       heart.style.bottom="20px";
 
-      const side = sides[Math.floor(Math.random()*sides.length)];
+      const side=sides[Math.floor(Math.random()*sides.length)];
       if(side==="left"){
-        heart.style.left=(window.innerWidth*0.2 + Math.random()*100)+"px";
-      } else {
-        heart.style.left=(window.innerWidth*0.7 + Math.random()*100)+"px";
+        heart.style.left=(10 + Math.random()*50)+"px"; // sol kenara yakın
+      }else{
+        heart.style.left=(window.innerWidth-90 + Math.random()*50)+"px"; // sağ kenara yakın
       }
 
       body.appendChild(heart);
 
-      const duration=3000+Math.random()*2000;
+      const duration=(3000+Math.random()*2000)*3; // 3 kat yavaş
       const translateY=-window.innerHeight-50;
 
       heart.animate([
@@ -288,7 +284,6 @@ function startHearts() {
     }
   },800);
 }
-
 partyButton.addEventListener("click", startHearts);
 </script>
 
