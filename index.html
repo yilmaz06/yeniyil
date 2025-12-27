@@ -53,11 +53,11 @@ body{
 
 .text{
   color:white;
-  font-size:22px;
+  font-size:28px;
   margin-top:15px;
 }
 
-/* PARLAMA – HEDİYEYİ TAM SARAR */
+/* PARLAMA */
 #giftGlow{
   position:absolute;
   width:420px;
@@ -115,7 +115,6 @@ body{
 }
 </style>
 </head>
-
 <body>
 
 <div id="countdown">3</div>
@@ -130,7 +129,7 @@ body{
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
-  <div class="text" style="color:white;font-size:24px;">Hediyeniz burada 🎁</div>
+  <div class="text">Hediyeniz burada 🎁</div>
 </div>
 
 <img src="1766680551797.png" id="bouquet">
@@ -150,7 +149,7 @@ const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
 
-/* SAYFA AÇILINCA KAR */
+/* KAR */
 for(let i=0;i<300;i++){
   const s=document.createElement("div");
   s.className="falling";
@@ -171,14 +170,10 @@ const timer=setInterval(()=>{
   c--;
   if(c>0){
     cd.textContent=c;
-    if(c===2){
-      showHeartAndText(); // 2. saniyede kalp ve yazılar
-      introMusic.muted=false;
-      introMusic.play().catch(()=>{});
-    }
   }else{
     clearInterval(timer);
     cd.style.display="none";
+    introMusic.muted=false; 
     gift.classList.add("active");
   }
 },1500);
@@ -188,6 +183,7 @@ gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
+  /* PARLAMA */
   glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
@@ -219,52 +215,68 @@ gift.onclick=()=>{
   },800);
 };
 
-/* KALP VE YAZILAR */
-function showHeartAndText(){
-  const giftRect=gift.getBoundingClientRect();
-  const positions=[
-    {x:giftRect.left-70, y:giftRect.top+50, text:"Sol Yazı"}, // Sol
-    {x:giftRect.right+10, y:giftRect.top+50, text:"Sağ Yazı"},  // Sağ
-    {x:giftRect.left + giftRect.width/2 -30, y:giftRect.top-50, text:"Üst Yazı"} // Üst
+/* GERİ SAYIM 2'DE KALP VE YAZI */
+function showHeartsAndTexts() {
+  const positions = [
+    {x: gift.offsetLeft - 60, y: gift.offsetTop + gift.offsetHeight/2}, // Sol
+    {x: gift.offsetLeft + gift.offsetWidth + 10, y: gift.offsetTop + gift.offsetHeight/2}, // Sağ
+    {x: gift.offsetLeft + gift.offsetWidth/2 - 30, y: gift.offsetTop - 60} // Üst
   ];
+  const texts = ["Sol Yazı", "Sağ Yazı", "Üst Yazı"];
 
-  positions.forEach(pos=>{
+  positions.forEach((pos,i)=>{
     // Kalp
     const heart=document.createElement("div");
     heart.textContent="❤️";
     heart.style.position="fixed";
     heart.style.left=pos.x+"px";
     heart.style.top=pos.y+"px";
-    heart.style.fontSize="24px";
+    heart.style.fontSize="28px";
     heart.style.color="red";
     document.body.appendChild(heart);
 
     heart.animate([
-      {transform:"translateY(0px)", opacity:1},
-      {transform:"translateY(-50px)", opacity:0}
-    ], {duration:1500, easing:"ease-out"});
+      {transform:"translateY(0px)",opacity:1},
+      {transform:"translateY(-80px)",opacity:0}
+    ],{duration:1500,easing:"ease-out"});
+
     setTimeout(()=>heart.remove(),1500);
 
     // Yazı
-    const txt=document.createElement("div");
-    txt.textContent=pos.text;
-    txt.style.position="fixed";
-    txt.style.left=pos.x+"px";
-    txt.style.top=(pos.y+30)+"px";
-    txt.style.color="white";
-    txt.style.fontSize="18px";
-    txt.style.opacity=0;
-    document.body.appendChild(txt);
+    const text=document.createElement("div");
+    text.textContent=texts[i];
+    text.style.position="fixed";
+    text.style.left=pos.x+"px";
+    text.style.top=(pos.y+35)+"px";
+    text.style.color="white";
+    text.style.fontSize="20px";
+    text.style.opacity=0;
+    document.body.appendChild(text);
 
-    txt.animate([
+    // Hayalet efekti
+    text.animate([
       {opacity:0},
       {opacity:1},
       {opacity:1},
       {opacity:0}
-    ], {duration:2500, easing:"ease-in-out"});
-    setTimeout(()=>txt.remove(),2500);
+    ],{duration:2500,easing:"ease-in-out"});
+
+    setTimeout(()=>text.remove(),2500);
   });
 }
+
+// Geri sayım kontrolü
+let countdownNumber=3;
+const countdownInterval=setInterval(()=>{
+  countdownNumber--;
+  if(countdownNumber===2){
+    showHeartsAndTexts();
+  }
+  if(countdownNumber<=0){
+    clearInterval(countdownInterval);
+  }
+},1500);
 </script>
+
 </body>
 </html>
