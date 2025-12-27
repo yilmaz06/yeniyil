@@ -122,7 +122,7 @@ body{
   transform:translate(-50%,-50%);
   font-size:120px;
   cursor:pointer;
-  z-index:50;
+  z-index:9999;
   user-select:none;
 }
 #partyText{
@@ -131,7 +131,7 @@ body{
   transform:translateX(-50%);
   color:white;
   font-size:32px;
-  z-index:50;
+  z-index:9999;
 }
 </style>
 </head>
@@ -153,7 +153,7 @@ body{
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
-  <div class="text">Hediyen burada 🎁</div>
+  <div class="text">Hediyeniz burada 🎁</div>
 </div>
 
 <img src="1766680551797.png" id="bouquet">
@@ -163,8 +163,6 @@ body{
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
-// 🎉 simgesine tıklanınca başlat
-partyButton.addEventListener("click", startHearts);
 const flowerEmojis=["🌹","🌺","🌸","🪻"];
 const gift=document.getElementById("gift");
 const glow=document.getElementById("giftGlow");
@@ -213,7 +211,7 @@ partyButton.onclick=()=>{
       cd.style.display="none";
       gift.classList.add("active");
     }
-  },2500); /* 2.5 saniye */
+  },2000); /* 2 saniye */
 };
 
 /* HEDİYE */
@@ -250,54 +248,45 @@ gift.onclick=()=>{
 
     bouquet.style.display="block";
     note.style.display="block";
-  
   },800);
 };
-// 🎉 simgesine basıldıktan sonra kalp animasyonu
-function startHearts() {
-  const partyButton = document.getElementById("partyButton");
-  const body = document.body;
 
-  const sides = ["left", "right"]; // Sol ve sağ
-  let heartIndex = 0;
+// 🎉 simgesine basıldıktan sonra kalp animasyonu (sağ ve sol alt)
+function startHearts() {
+  const body = document.body;
+  const sides = ["left","right"];
 
   setInterval(() => {
-    // Her döngüde 7-8 kalp üretecek
-    for (let i = 0; i < 8; i++) {
-      const heart = document.createElement("div");
-      heart.textContent = "❤️";
-      heart.style.position = "fixed";
-      heart.style.fontSize = (20 + Math.random() * 10) + "px";
-      heart.style.color = "red";
-      heart.style.zIndex = 60;
-      heart.style.opacity = 1;
+    for(let i=0;i<8;i++){
+      const heart=document.createElement("div");
+      heart.textContent="❤️";
+      heart.style.position="fixed";
+      heart.style.fontSize=(20+Math.random()*10)+"px";
+      heart.style.color="red";
+      heart.style.zIndex=60;
+      heart.style.opacity=1;
+      heart.style.bottom="20px";
 
-      // Yanlardan başlat
-      const side = sides[Math.floor(Math.random() * sides.length)];
-      heart.style.bottom = "20px";
-      if (side === "left") {
-        heart.style.left = (partyButton.offsetLeft - 20 + Math.random() * 40) + "px";
+      const side = sides[Math.floor(Math.random()*sides.length)];
+      if(side==="left"){
+        heart.style.left=(partyButton.offsetLeft-20+Math.random()*40)+"px";
       } else {
-        heart.style.left = (partyButton.offsetLeft + partyButton.offsetWidth - 20 + Math.random() * 40) + "px";
+        heart.style.left=(partyButton.offsetLeft+partyButton.offsetWidth-20+Math.random()*40)+"px";
       }
 
       body.appendChild(heart);
 
-      // Yukarı süzülme animasyonu
-      const duration = 3000 + Math.random() * 1000; // 3-4 saniye
+      const duration=3000+Math.random()*1000;
       heart.animate([
-        { transform: "translateY(0px)", opacity: 1 },
-        { transform: "translateY(-200px)", opacity: 0 }
-      ], { duration: duration, easing: "ease-out" });
+        {transform:"translateY(0px)",opacity:1},
+        {transform:"translateY(-200px)",opacity:0}
+      ],{duration:duration,easing:"ease-out"});
 
-      setTimeout(() => {
-        heart.remove();
-      }, duration);
+      setTimeout(()=>heart.remove(),duration);
     }
-  }, 800); // Her 0.8 saniyede yeni 7-8 kalp üret
+  },800);
 }
 
-// 🎉 simgesine tıklanınca başlat
 partyButton.addEventListener("click", startHearts);
 </script>
 
