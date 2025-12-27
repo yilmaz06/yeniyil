@@ -115,34 +115,37 @@ body{
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
-/* 🎉 Başlangıç simgesi */
-#party{
+/* 🎉 BUTON */
+#partyButton{
   position:fixed;
-  top:50%;left:50%;
+  top:50%; left:50%;
   transform:translate(-50%,-50%);
-  font-size:150px;
+  font-size:120px;
   cursor:pointer;
   z-index:50;
+  user-select:none;
 }
 #partyText{
   position:fixed;
-  top:65%;left:50%;
+  top:60%; left:50%;
   transform:translateX(-50%);
   color:white;
   font-size:32px;
-  font-weight:bold;
   z-index:50;
 }
 </style>
 </head>
-
 <body>
+
+<!-- 🎉 BUTON -->
+<div id="partyButton">🎉</div>
+<div id="partyText">Buraya tıkla</div>
 
 <div id="countdown">3</div>
 
 <img src="1766762547682.png" class="wreath" id="w1">
 <img src="1766762547682.png" class="wreath" id="w2">
-<img src="1766762547682.png" class="w3">
+<img src="1766762547682.png" class="wreath" id="w3">
 <img src="1766762547682.png" class="wreath" id="w4">
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
@@ -156,12 +159,8 @@ body{
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
+<audio id="introMusic" src="Pillibebek1.mp3"></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
-
-<!-- 🎉 Başlangıç -->
-<div id="party">🎉</div>
-<div id="partyText">Buraya tıkla</div>
 
 <script>
 const flowerEmojis=["🌹","🌺","🌸","🪻"];
@@ -173,8 +172,8 @@ const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
 const introMusic=document.getElementById("introMusic");
 const mainMusic=document.getElementById("mainMusic");
-const countdown=document.getElementById("countdown");
-const party=document.getElementById("party");
+
+const partyButton=document.getElementById("partyButton");
 const partyText=document.getElementById("partyText");
 
 /* KAR */
@@ -191,24 +190,28 @@ for(let i=0;i<180;i++){
   document.body.appendChild(s);
 }
 
-/* 🎉 TIK */
-party.onclick=()=>{
-  party.style.display="none";
+/* 🎉 TIKLAMA */
+partyButton.onclick=()=>{
+  partyButton.style.display="none";
   partyText.style.display="none";
-  countdown.style.display="flex";
-  introMusic.play().catch(()=>{});
 
+  /* Müzik başlasın */
+  introMusic.play();
+
+  /* Geri sayımı göster */
+  document.getElementById("countdown").style.display="flex";
   let c=3;
+  const cd=document.getElementById("countdown");
   const timer=setInterval(()=>{
     c--;
     if(c>0){
-      countdown.textContent=c;
+      cd.textContent=c;
     }else{
       clearInterval(timer);
-      countdown.style.display="none";
+      cd.style.display="none";
       gift.classList.add("active");
     }
-  },1500);
+  },2500); /* 2.5 saniye */
 };
 
 /* HEDİYE */
