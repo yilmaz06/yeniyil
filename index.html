@@ -3,13 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <title>Sürpriz 🎁</title>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   width:100vw;height:100vh;
   background:linear-gradient(135deg,#8b0000,#000);
   overflow:hidden;font-family:Arial,sans-serif;
+  position:relative;
+}
+
+/* KAR & ÇİÇEKLER */
+.falling{
+  position:fixed;
+  pointer-events:none;
+  user-select:none;
+  z-index:999;
+  animation:fall linear;
+}
+@keyframes fall{
+  from{transform:translateY(-200px) rotate(0deg)}
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* ORTA 🎉 */
+#startBtn{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:120px;
+  cursor:pointer;
+  z-index:50;
+  user-select:none;
+}
+#startText{
+  position:fixed;
+  top:calc(50% + 100px);
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-size:30px;
+  z-index:50;
 }
 
 /* GERİ SAYIM */
@@ -51,20 +83,21 @@ body{
   20%{transform:rotate(5deg)}
   25%,100%{transform:rotate(0)}
 }
-
 .text{
   color:white;
   font-size:22px;
   margin-top:15px;
 }
 
-/* PARLAMA */
+/* PARLAMA HEDİYE */
 #giftGlow{
   position:absolute;
-  width:420px;height:420px;
-  left:50%;top:50%;
+  width:420px;
+  height:420px;
+  left:50%;
+  top:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
+  background:radial-gradient(circle,rgba(255,215,0,.75),rgba(255,215,0,.35),rgba(255,215,0,0));
   opacity:0;
   z-index:-1;
 }
@@ -78,70 +111,54 @@ body{
 #w5{bottom:80px;left:calc(50% - 150px);width:360px}
 #w6{bottom:90px;left:calc(50% + 150px);width:330px}
 
-/* BUKET */
-#bouquet{
-  position:fixed;
-  top:38%;left:50%;
-  transform:translate(-50%,-50%);
-  width:1000px;
-  display:none;
-  z-index:30;
-}
-#note{
-  position:fixed;
-  top:52%;left:50%;
-  transform:translateX(-50%);
-  width:600px;
-  display:none;
-  z-index:30;
-}
+/* BUKET & NOT */
+#bouquet{position:fixed;top:38%;left:50%;transform:translate(-50%,-50%);width:1000px;display:none;z-index:30;}
+#note{position:fixed;top:52%;left:50%;transform:translateX(-50%);width:600px;display:none;z-index:30;}
 
-/* KAR & ÇİÇEK */
-.falling{
-  position:fixed;
-  pointer-events:none;
-  user-select:none;
+/* KALP & YAZI */
+.heart{
+  position:absolute;
+  font-size:40px;
+  color:red;
   z-index:999;
-  animation:fall linear;
-}
-@keyframes fall{
-  from{transform:translateY(-200px) rotate(0deg)}
-  to{transform:translateY(110vh) rotate(360deg)}
-}
-
-/* 🎉 BUTON */
-#partyBtn{
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-size:120px;
-  cursor:pointer;
-  z-index:100;
-  animation:shake 2s infinite;
-}
-#partyText{
-  position:fixed;
-  top:calc(50% + 100px);
-  left:50%;
-  transform:translateX(-50%);
-  color:white;
-  font-size:28px;
-  text-shadow:0 0 10px gold;
-  z-index:100;
-}
-
-/* HAYALET YAZILAR */
-.hayalet{
-  position:fixed;
-  color:white;
-  font-size:28px;
-  opacity:0.7;
-  font-weight:bold;
   pointer-events:none;
+  opacity:0.9;
+  animation:rise 2s linear forwards;
+}
+@keyframes rise{
+  0%{transform:translateY(0);}
+  100%{transform:translateY(-200px);opacity:0;}
+}
+.hintText{
+  position:absolute;
+  color:white;
+  font-size:20px;
+  opacity:0.7;
+  z-index:999;
 }
 </style>
 </head>
 <body>
+
+<!-- KAR -->
+<script>
+for(let i=0;i<150;i++){
+  const s=document.createElement("div");
+  s.className="falling";
+  s.textContent="❄";
+  s.style.left=Math.random()*100+"vw";
+  s.style.fontSize=(Math.random()*18+16)+"px";
+  s.style.color=Math.random()>0.5?"white":"#aaf";
+  s.style.animationDuration=(Math.random()*6+6)+"s";
+  s.style.opacity=Math.random();
+  s.style.animationIterationCount="infinite";
+  document.body.appendChild(s);
+}
+</script>
+
+<!-- 🎉 Başlat -->
+<div id="startBtn">🎉</div>
+<div id="startText">Buraya bas</div>
 
 <!-- GERİ SAYIM -->
 <div id="countdown">3</div>
@@ -154,66 +171,79 @@ body{
 <img src="1766762547682.png" class="wreath" id="w5">
 <img src="1766762547682.png" class="wreath" id="w6">
 
-<!-- ORTA -->
+<!-- HEDİYE -->
 <div class="center">
   <div id="giftGlow"></div>
   <img src="1766682404708.png" id="gift">
   <div class="text">Hediyeniz burada 🎁</div>
 </div>
 
-<!-- Buket ve Not -->
+<!-- BUKET & NOT -->
 <img src="1766680551797.png" id="bouquet">
 <img src="1766769594942.png" id="note">
 
-<!-- 🎉 BUTON -->
-<div id="partyBtn">🎉</div>
-<div id="partyText">Buraya bas!</div>
-
 <!-- MÜZİKLER -->
-<audio id="introMusic" src="Pillibebek1.mp3" loop></audio>
+<audio id="introMusic" src="Pillibebek1.mp3"></audio>
 <audio id="mainMusic" src="BillieEilish.mp3" loop></audio>
 
 <script>
-const flowerEmojis=["🌹","🌺","🌸","🪻"];
+const startBtn=document.getElementById("startBtn");
+const startText=document.getElementById("startText");
+const countdown=document.getElementById("countdown");
+const introMusic=document.getElementById("introMusic");
+const mainMusic=document.getElementById("mainMusic");
 const gift=document.getElementById("gift");
 const glow=document.getElementById("giftGlow");
 const text=document.querySelector(".text");
 const wreaths=document.querySelectorAll(".wreath");
 const bouquet=document.getElementById("bouquet");
 const note=document.getElementById("note");
-const countdown=document.getElementById("countdown");
-const partyBtn=document.getElementById("partyBtn");
-const partyText=document.getElementById("partyText");
-const introMusic=document.getElementById("introMusic");
-const mainMusic=document.getElementById("mainMusic");
+const flowerEmojis=["🌹","🌺","🌸","🪻"];
 
-/* KAR */
-for(let i=0;i<180;i++){
-  const s=document.createElement("div");
-  s.className="falling";
-  s.textContent="❄";
-  s.style.left=Math.random()*100+"vw";
-  s.style.fontSize=(Math.random()*18+16)+"px";
-  s.style.color=Math.random()>0.5?"white":"#aaf";
-  s.style.animationDuration=(Math.random()*6+6)+"s";
-  s.style.opacity=Math.random();
-  s.style.animationIterationCount="infinite";
-  document.body.appendChild(s);
-}
-
-/* 🎉 TIK */
-partyBtn.onclick=()=>{
-  partyBtn.style.display="none";
-  partyText.style.display="none";
-  countdown.style.display="flex";
+startBtn.onclick=function(){
+  startBtn.style.display="none";
+  startText.style.display="none";
   introMusic.play().catch(()=>{});
+  countdown.style.display="flex";
 
   let c=3;
   const timer=setInterval(()=>{
     c--;
     if(c>0){
       countdown.textContent=c;
-      // Buraya yazılar ve kalpler eklenebilir
+      if(c==2){
+        // Kalp + yazı örnek
+        const h=document.createElement("div");
+        h.className="heart";
+        h.textContent="❤️";
+        h.style.top="60px";
+        h.style.left="60px";
+        document.body.appendChild(h);
+
+        const t=document.createElement("div");
+        t.className="hintText";
+        t.style.top="110px";
+        t.style.left="60px";
+        t.textContent="Bir an düşün\nKalbinden geçen ile";
+        document.body.appendChild(t);
+        setTimeout(()=>{h.remove();t.remove()},2500);
+      }
+      if(c==1){
+        const h=document.createElement("div");
+        h.className="heart";
+        h.textContent="❤️";
+        h.style.bottom="60px";
+        h.style.right="60px";
+        document.body.appendChild(h);
+
+        const t=document.createElement("div");
+        t.className="hintText";
+        t.style.bottom="110px";
+        t.style.right="60px";
+        t.textContent="Gözlerini aç ve\nYola devam et";
+        document.body.appendChild(t);
+        setTimeout(()=>{h.remove();t.remove()},2500);
+      }
     }else{
       clearInterval(timer);
       countdown.style.display="none";
@@ -222,18 +252,17 @@ partyBtn.onclick=()=>{
   },2500);
 };
 
-/* HEDİYE */
+/* HEDİYE TIK */
 gift.onclick=()=>{
   introMusic.pause();
   introMusic.currentTime=0;
 
-  /* PARLAMA */
-  glow.style.transition="opacity .6s ease-in";
+  glow.style.transition="opacity .9s ease-in";
   glow.style.opacity=1;
   setTimeout(()=>{
-    glow.style.transition="opacity .3s ease-out";
+    glow.style.transition="opacity .25s ease-out";
     glow.style.opacity=0;
-  },600);
+  },700);
 
   setTimeout(()=>{
     gift.style.display="none";
@@ -256,8 +285,9 @@ gift.onclick=()=>{
 
     bouquet.style.display="block";
     note.style.display="block";
-  },700);
+  },800);
 };
 </script>
+
 </body>
 </html>
