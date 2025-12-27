@@ -177,7 +177,7 @@ const partyButton=document.getElementById("partyButton");
 const partyText=document.getElementById("partyText");
 
 /* KAR */
-for(let i=0;i<180;i++){
+for(let i=0;i<300;i++){
   const s=document.createElement("div");
   s.className="falling";
   s.textContent="❄";
@@ -233,7 +233,7 @@ gift.onclick=()=>{
     wreaths.forEach(w=>w.style.display="none");
     mainMusic.play();
 
-    for(let i=0;i<50;i++){
+    for(let i=0;i<100;i++){
       const f=document.createElement("div");
       f.className="falling";
       f.textContent=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
